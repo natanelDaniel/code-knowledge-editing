@@ -1,62 +1,120 @@
-# Ollama Quickstart: Basic Text Generation with CodeLlama
+# Code Knowledge Editing for LLMs
 
-This project demonstrates a basic integration with the CodeLlama Large Language Model (LLM) via Ollama for text generation.
+This project implements a pipeline for editing specific knowledge within Large Language Models (LLMs) focused on programming contexts. It focuses on extracting structured information about deprecated code functionalities and their modern replacements from various release notes. This extracted data can then be used to synthesize editing datasets for LLMs, aiming to improve their ability to provide up-to-date and accurate coding guidance.
 
-## Installation
+The pipeline covers the full lifecycle: from synthesizing editing datasets to applying and evaluating model updates using state-of-the-art editing techniques.
 
-To get started with this project, follow these steps:
+## 🛠 Project Workflow
 
-1.  **Install Ollama:**
-    Download and install Ollama from [ollama.com](https://ollama.com/download).
+The core of this project is the `pipeline_ver1.py` script, which automates the extraction of deprecation information.
 
-2.  **Download the `codellama:7b` model:**
-    Open your terminal and run:
+### Features
+
+*   **Automated Release Note Fetching**: Downloads content from specified URLs containing release notes.
+*   **Gemini AI-Powered Extraction**: Leverages the Google Gemini AI model (`gemini-2.5-flash-lite`) to intelligently parse release notes and identify deprecated features.
+*   **Structured JSON Output**: Enforces a strict JSON schema for extracted information, ensuring consistency and ease of downstream processing.
+*   **Q&A Format Generation**: Deprecation information is transformed into a Question & Answer format, making it suitable for training LLMs on knowledge editing tasks.
+*   **Multiple Question Phrasing**: Generates two versions of each question (`question` and `question_ver2`) to provide diverse query options for LLM training.
+*   **Contextual Completion Prompts**: Provides a `completion_prompt` field to guide LLMs in generating accurate and helpful responses for the new approach.
+
+### 🚀 Setup and Installation
+
+1.  **Clone the repository**:
     ```bash
-    ollama pull codellama:7b
+    git clone https://github.com/natanelDaniel/code-knowledge-editing.git
+    cd code-knowledge-editing
     ```
 
-3.  **Create a virtual environment (optional but recommended):**
-    ```bash
-    python -m venv venv
-    ```
-
-4.  **Activate the virtual environment:**
-    *   **Windows:**
-        ```bash
-        .\venv\Scripts\activate
-        ```
-    *   **macOS/Linux:**
-        ```bash
-        source venv/bin/activate
-        ```
-
-5.  **Install required packages:**
+2.  **Install dependencies**:
     ```bash
     pip install -r requirements.txt
     ```
+    *(Note: If `requirements.txt` is not present, you may need to create it with `google-generativeai`, `requests`, and `numpy`.)*
 
-## Usage
-
-1.  **IMPORTANT: Ensure Ollama server is running.**
-    The Ollama application must be running in the background for the API to be accessible. If it's not running, please start it.
-
-2.  **Run the main script:**
+3.  **Configure Gemini API Key**:
+    Obtain a Google Gemini API key from the [Google AI Studio](https://ai.google.dev/). Set it as an environment variable:
     ```bash
-    python main.py
+    export GEMINI_API_KEY="YOUR_GEMINI_API_KEY"
+    # On Windows: set GEMINI_API_KEY="YOUR_GEMINI_API_KEY"
+    ```
+    Alternatively, you can directly set it in `pipeline_ver1.py` (though environment variables are recommended for security).
+
+### 💡 Usage
+
+To run the pipeline and extract deprecation information:
+
+```bash
+python pipeline_ver1.py
+```
+
+The script will fetch release notes from a predefined list of URLs (e.g., NumPy, Pandas, PyTorch release notes) and process them.
+
+### 📊 Output
+
+The extracted deprecation information will be saved in a JSON file named `extracted_deprecations_v1.json` in the project root directory.
+
+Each entry in the JSON array will follow this structure:
+
+```json
+[
+  {
+    "name": "A brief name for the change or deprecation.",
+    "question": "A focused user question that doesn\'t explicitly mention the deprecated function, but asks about its purpose.",
+    "question_ver2": "An alternative phrasing of the user question, conveying the same meaning.",
+    "old_approach": "A descriptive, code explanation of the deprecated approach, in the present tense.",
+    "new_approach": "A concise, plain-language description of the recommended alternative.",
+    "subject": "The specific technical entity or term being modified, appearing exactly within \'question\'.",
+    "completion_prompt": "A prompt that guides the model in generating a completion based on the provided context."
+  },
+  // ... more deprecations
+]
+```
+
+## ✏️ Knowledge Editing
+
+This section outlines how to use the extracted deprecation data to perform knowledge editing on LLMs using the `EasyEdit` framework.
+
+1.  **Clone the EasyEdit repository**:
+    ```bash
+    git clone https://github.com/zjukg/EasyEdit.git
+    cd EasyEdit
+    pip install -e .
     ```
 
-## Troubleshooting
+2.  **Prepare the editing data**:
+    The `extracted_deprecations_v1.json` file generated by `pipeline_ver1.py` contains the necessary information for editing. An example data structure is:
 
-*   **`Error: Could not connect to Ollama server.`**
-    This error indicates that the Ollama application is not running or is not accessible. Please ensure Ollama is installed and running on your machine. You can typically start Ollama by launching the application or running `ollama serve` in your terminal.
+    ```python
+    data = {
+        "name": "Pandas Append Deprecation",
+        "question": "How do I add a row or another DataFrame to an existing DataFrame?",
+        "old_approach": "df.append(other_df)",
+        "new_approach": "pd.concat([df, other_df])",
+        "subject": "add a row or another DataFrame to an existing DataFrame",
+        "completion_prompt": "To combine two DataFrames, the recommended way is"
+    }
 
-*   **`404 Client Error: Not Found for url: http://localhost:11434/api/generate`**
-    This error usually means that the `codellama:7b` model is not available or not loaded in your Ollama instance. Please ensure you have pulled the model. Open your terminal and run:
-    ```bash
-    ollama list
+    prompt = data["question"]
+    ground_truth = data["old_approach"]
+    target_new = data["new_approach"]
+    completion_prompt = data["completion_prompt"]
     ```
-    If `codellama:7b` is not listed, pull it using:
-    ```bash
-    ollama pull codellama:7b
+
+3.  **Perform the knowledge edit**:
+    You can use the `BaseEditor` from `EasyEdit` to perform the knowledge editing:
+
+    ```python
+    # Assuming BaseEditor is imported from EasyEdit
+    # from EasyEdit import BaseEditor
+
+    editor = BaseEditor.from_hparams(hparams) # hparams should be configured for your specific LLM and editing method
+    metrics, edited_model, _ = editor.edit(
+        prompts=[prompt],
+        ground_truth=[ground_truth],
+        target_new=[target_new],
+        sequential_edit=True,
+        subject=data['subject']
+    )
     ```
-    After pulling the model, try running `main.py` again.
+
+    The `hparams` object would typically contain configurations for the LLM you are editing (e.g., model name, path) and the chosen editing algorithm (e.g., ROME, MEMIT).
