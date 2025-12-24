@@ -1,0 +1,1736 @@
+[
+    {
+        "name": "Removal of np.tostring",
+        "question": "How can I convert a NumPy array to a byte string?",
+        "old_approach": "The np.tostring() method is used to convert a NumPy array into a byte string.",
+        "new_approach": "The np.tobytes() method provides an alternative for converting a NumPy array into a byte string."
+    },
+    {
+        "name": "Removal of NPY_OWNDATA macro",
+        "question": "How do I specify that a NumPy array owns its data in Cython interfaces?",
+        "old_approach": "The NPY_OWNDATA macro is used in Cython interfaces to indicate that a NumPy array owns its data.",
+        "new_approach": "The NPY_ARRAY_OWNDATA macro is the preferred way to specify that a NumPy array owns its data in Cython interfaces."
+    },
+    {
+        "name": "Removal of generate_divbyzero_error and generate_overflow_error aliases",
+        "question": "How can I set the float status for division by zero or overflow errors?",
+        "old_approach": "The generate_divbyzero_error and generate_overflow_error functions are used to set the float status for division by zero and overflow errors, respectively.",
+        "new_approach": "The npy_set_floatstatus_divbyzero and npy_set_floatstatus_overflow functions are used to set the float status for division by zero and overflow errors, respectively."
+    },
+    {
+        "name": "Removal of np.fromstring binary mode",
+        "question": "How can I read binary data from a string into a NumPy array?",
+        "old_approach": "The binary mode of np.fromstring() is used to read binary data from a string into a NumPy array.",
+        "new_approach": "The np.frombuffer() function should be used instead of np.fromstring() in binary mode for reading binary data."
+    },
+    {
+        "name": "Deprecation of np.typing.mypy_plugin",
+        "question": "How can I improve static type checking for NumPy arrays without a dedicated plugin?",
+        "old_approach": "The numpy.typing.mypy_plugin was used to help mypy perform static type inference for NumPy arrays.",
+        "new_approach": "NumPy now offers platform-agnostic static type inference, eliminating the need for the numpy.typing.mypy_plugin."
+    },
+    {
+        "name": "Deprecation of numpy.typing.NBitBase",
+        "question": "How can I correctly type hint functions that operate on NumPy floating-point types with varying bit depths?",
+        "old_approach": "The numpy.typing.NBitBase type was intended as a generic upper bound for type parameters in NumPy function type hints.",
+        "new_approach": "Using typing.overload is the recommended approach for type hinting functions that handle different NumPy floating-point types, providing better specificity and compatibility."
+    },
+    {
+        "name": "Deprecation of _add_newdoc_ufunc",
+        "question": "How can I add documentation to a ufunc?",
+        "old_approach": "The _add_newdoc_ufunc method is used to add documentation to a ufunc.",
+        "new_approach": "Use `ufunc.__doc__ = newdoc` to add documentation to a ufunc."
+    },
+    {
+        "name": "Expiration of bool() on empty arrays",
+        "question": "How can I check if an array has elements before casting it to a boolean?",
+        "old_approach": "Casting an empty array to a boolean using `bool(np.array([]))` is being phased out.",
+        "new_approach": "Use `arr.size > 0` to check if an array has elements before casting it to a boolean."
+    },
+    {
+        "name": "Deprecation of fix_imports in numpy.save",
+        "question": "How can I ensure backward compatibility when saving arrays that might have been created with older Python versions?",
+        "old_approach": "The `fix_imports` keyword argument in `numpy.save` is used to handle potential import differences.",
+        "new_approach": "The `fix_imports` keyword argument in `numpy.save` is now deprecated and will be removed in a future version. Use alternative serialization methods if Python 2 compatibility is required."
+    },
+    {
+        "name": "Deprecation of non-integer inputs to numpy.bincount",
+        "question": "How can I ensure that my bincount operations do not lead to unexpected behavior or data loss due to type coercion?",
+        "old_approach": "Passing non-integer inputs as the first argument to `numpy.bincount` is allowed.",
+        "new_approach": "Passing non-integer inputs as the first argument to `numpy.bincount` is now deprecated and will be removed. Provide integer inputs to avoid silent data loss or unexpected results."
+    },
+    {
+        "name": "Removal of scalar and 0D array support for numpy.nonzero",
+        "question": "How can I find the indices of non-zero elements in my arrays when working with scalar or zero-dimensional arrays?",
+        "old_approach": "The `numpy.nonzero` function and `numpy.ndarray.nonzero` method accept scalars and 0D arrays.",
+        "new_approach": "Scalars and 0D arrays are disallowed for `numpy.nonzero` and `numpy.ndarray.nonzero`. Use a 1D array or handle these cases separately."
+    },
+    {
+        "name": "Removal of set_string_function",
+        "question": "How can I customize the string representation of NumPy arrays?",
+        "old_approach": "The internal function `set_string_function` is used to customize array string representation.",
+        "new_approach": "The internal function `set_string_function` has been removed. Use `numpy.printoptions` and related functions for controlling array string formatting."
+    },
+    {
+        "name": "NumPy C API symbol hiding",
+        "question": "How can I ensure my C extensions that use the NumPy C API can link correctly and function as expected?",
+        "old_approach": "NumPy API symbols are exported by default, allowing dynamic fetching of the NumPy API from other libraries.",
+        "new_approach": "NumPy now defaults to hiding API symbols. Define `NPY_API_SYMBOL_ATTRIBUTE` if you encounter linking errors related to `PyArray_API` or `PyArray_RUNTIME_VERSION`, or ensure NumPy is imported correctly in your upstream headers."
+    },
+    {
+        "name": "Removal of shims from npy_3kcompat.h",
+        "question": "How can I maintain compatibility with older NumPy versions or specific Python 3 behaviors when using NumPy's C API?",
+        "old_approach": "The `npy_3kcompat.h` header provides shims and helper functions for Python 3 compatibility.",
+        "new_approach": "Many old shims and helper functions have been removed from `npy_3kcompat.h`. If needed, vendor the previous version of the file into your codebase."
+    },
+    {
+        "name": "New PyUFuncObject field for core dimension processing",
+        "question": "How can generalized ufuncs validate core dimensions and set output sizes dynamically?",
+        "old_approach": "Generalized ufuncs have limited mechanisms for dynamic core dimension validation and setting.",
+        "new_approach": "The `PyUFuncObject` now has a `process_core_dims_func` field that allows ufunc authors to check core dimension constraints and set output core dimension sizes."
+    },
+    {
+        "name": "numpy.reshape supports shape and copy arguments",
+        "question": "How can I control the shape and whether a copy is made when reshaping arrays using numpy.reshape?",
+        "old_approach": "The `numpy.reshape` function does not directly support `shape` and `copy` arguments.",
+        "new_approach": "`numpy.reshape` and `numpy.ndarray.reshape` now support `shape` and `copy` arguments, providing more control over the reshaping operation."
+    },
+    {
+        "name": "NumPy DLPack v1 support",
+        "question": "How can I ensure compatibility with the latest DLPack standard when exchanging data with other libraries?",
+        "old_approach": "NumPy's DLPack support may not be fully compliant with the latest DLPack standard.",
+        "new_approach": "NumPy now supports DLPack v1. Support for older versions will be deprecated in the future."
+    },
+    {
+        "name": "numpy.asanyarray supports copy and device arguments",
+        "question": "How can I control whether a copy is made or specify a device when converting an array-like input to a NumPy array?",
+        "old_approach": "`numpy.asanyarray` does not support `copy` and `device` arguments.",
+        "new_approach": "`numpy.asanyarray` now supports `copy` and `device` arguments, aligning its behavior with `numpy.asarray` and providing more flexibility."
+    },
+    {
+        "name": "New override_repr option for numpy.printoptions",
+        "question": "How can I define custom string representations for NumPy arrays when printing or debugging?",
+        "old_approach": "Customizing the `repr(array)` behavior is not directly supported by `numpy.printoptions`.",
+        "new_approach": "`numpy.printoptions`, `numpy.get_printoptions`, and `numpy.set_printoptions` now support a new option, `override_repr`, for defining custom `repr(array)` behavior."
+    },
+    {
+        "name": "Introduction of numpy.cumulative_sum and numpy.cumulative_prod",
+        "question": "How can I compute cumulative sums and products with an initial value included in the result, compatible with the Array API standard?",
+        "old_approach": "`numpy.cumsum` and `numpy.cumprod` do not directly support including a fixed initial value in the result.",
+        "new_approach": "`numpy.cumulative_sum` and `numpy.cumulative_prod` have been added as Array API compatible alternatives to `numpy.cumsum` and `numpy.cumprod`. These new functions can include a fixed initial value (zeros for sum, ones for product) in the result."
+    },
+    {
+        "name": "numpy.clip supports max and min keyword arguments",
+        "question": "How can I clip array values using descriptive keyword arguments for the minimum and maximum bounds?",
+        "old_approach": "`numpy.clip` uses `a_min` and `a_max` for specifying bounds.",
+        "new_approach": "`numpy.clip` now supports `max` and `min` keyword arguments, which are intended to replace `a_min` and `a_max`. Additionally, `np.clip(a)` or `np.clip(a, None, None)` now returns a copy of the input array instead of raising an error."
+    },
+    {
+        "name": "numpy.astype supports device argument",
+        "question": "How can I specify the target device when casting NumPy arrays to a different data type?",
+        "old_approach": "`numpy.astype` does not support specifying a target device for the cast operation.",
+        "new_approach": "`numpy.astype` now supports the `device` argument, allowing you to specify where the casted array should reside."
+    },
+    {
+        "name": "F2PY freethreading compatibility",
+        "question": "How can I generate C extensions using f2py that are compatible with the free-threaded CPython interpreter?",
+        "old_approach": "F2py generated C extensions may re-enable the GIL at runtime, which is not compatible with the free-threaded CPython interpreter.",
+        "new_approach": "Pass `--freethreading-compatible` to the f2py CLI tool to produce a C extension marked as compatible with the free threading CPython interpreter, preventing the GIL from being re-enabled."
+    },
+    {
+        "name": "Histogram auto-binning improvement for integer data",
+        "question": "How can I ensure that histogram auto-binning results in meaningful bin sizes, especially for integer data?",
+        "old_approach": "For integer input data, histogram auto-binning might result in bin sizes less than 1, leading to empty bins.",
+        "new_approach": "For integer input data, `histogram` auto-binning now ensures bin sizes are at least 1, avoiding spurious empty bins."
+    },
+    {
+        "name": "ndarray shape-type parameter covariance",
+        "question": "How can static type checkers better understand and validate the shape of NumPy arrays?",
+        "old_approach": "The shape-type parameter of `ndarray` was not covariant and could accept any value.",
+        "new_approach": "The `ndarray` shape-type parameter is now covariant and bound to `tuple[int, ...]`, providing more accurate static typing for array shapes."
+    },
+    {
+        "name": "np.quantile closest_observation method",
+        "question": "How does `np.quantile` with the `closest_observation` method determine the nearest order statistic in border cases?",
+        "old_approach": "The `closest_observation` method in `np.quantile` previously chose the nearest odd order statistic in border cases.",
+        "new_approach": "The `closest_observation` method in `np.quantile` now chooses the nearest even order statistic in border cases, aligning with other reference implementations."
+    },
+    {
+        "name": "lapack_lite thread safety",
+        "question": "How can I use linear algebra operations that rely on `lapack_lite` in a multi-threaded environment without risking data races or errors?",
+        "old_approach": "`lapack_lite`, a minimal LAPACK implementation, is not thread-safe.",
+        "new_approach": "`lapack_lite` is now thread-safe due to the addition of a global lock that serializes access in multi-threaded scenarios."
+    },
+    {
+        "name": "numpy.printoptions context manager thread and async safety",
+        "question": "How can I manage NumPy print options in multithreaded or asynchronous code without causing conflicts?",
+        "old_approach": "The `numpy.printoptions` context manager was not thread or async-safe due to its use of global variables.",
+        "new_approach": "The `numpy.printoptions` context manager is now thread and async-safe, utilizing a `ContextVar` for state management."
+    },
+    {
+        "name": "Type hinting for numpy.polynomial",
+        "question": "How can I use type hints with functions and classes in the `numpy.polynomial` module?",
+        "old_approach": "Functions and classes in `numpy.polynomial` lacked PEP 484 type annotations.",
+        "new_approach": "PEP 484 type annotations have been added for functions and convenience classes in `numpy.polynomial` and its sub-packages."
+    },
+    {
+        "name": "Improved type hints for numpy.dtypes",
+        "question": "How can I get more accurate type information when working with NumPy dtypes?",
+        "old_approach": "Type annotations for `numpy.dtypes` were not fully comprehensive and used type aliases.",
+        "new_approach": "The type annotations for `numpy.dtypes` have been improved, using specialized `dtype` subtypes and adding missing annotations for `numpy.dtypes.StringDType`."
+    },
+    {
+        "name": "numpy.save with object dtype using pickle protocol 4",
+        "question": "How can I optimize the saving of NumPy arrays with object dtype, especially for large arrays?",
+        "old_approach": "`numpy.save` used an older pickle protocol for saving arrays with object dtype.",
+        "new_approach": "`numpy.save` now uses pickle protocol version 4 for saving arrays with object dtype, improving speed and supporting larger pickle objects."
+    },
+    {
+        "name": "OpenBLAS build optimization",
+        "question": "How does the OpenBLAS build affect performance on different architectures?",
+        "old_approach": "The OpenBLAS build may include more kernels than necessary for certain architectures.",
+        "new_approach": "OpenBLAS on x86_64 and i686 is now built with fewer kernels, optimized for specific performance clusters like PRESCOTT, NEHALEM, SANDYBRIDGE, HASWELL, and SKYLAKEX."
+    },
+    {
+        "name": "OpenBLAS build on Windows without quadmath",
+        "question": "What are the licensing implications of the OpenBLAS build on Windows?",
+        "old_approach": "The OpenBLAS build on Windows may have licensing considerations due to quadmath.",
+        "new_approach": "OpenBLAS on Windows is now linked without quadmath, simplifying licensing."
+    },
+    {
+        "name": "Reversion of OpenBLAS multi-threading performance improvements on Windows",
+        "question": "Why might multi-threaded OpenBLAS performance on Windows be suboptimal?",
+        "old_approach": "Recent versions of OpenBLAS on Windows introduced performance improvements for multi-threading.",
+        "new_approach": "Due to a regression in OpenBLAS on Windows, the performance improvements when using multiple threads for OpenBLAS 0.3.26 were reverted."
+    },
+    {
+        "name": "ma.cov and ma.corrcoef performance improvement",
+        "question": "How can I speed up calculations of covariance and correlation coefficients for masked arrays?",
+        "old_approach": "`ma.cov` and `ma.corrcoef` can be slow, especially on large masked arrays.",
+        "new_approach": "`ma.cov` and `ma.corrcoef` have been refactored and are now significantly faster, particularly on large, masked arrays."
+    },
+    {
+        "name": "numpy.vecdot signature change",
+        "question": "How does the signature of `numpy.vecdot` change when it becomes a ufunc?",
+        "old_approach": "`numpy.vecdot` has a precise signature.",
+        "new_approach": "As `numpy.vecdot` is now a ufunc, it has a less precise signature due to the limitations of ufunc typing stubs."
+    },
+    {
+        "name": "numpy.floor, ceil, trunc behavior with integer/boolean inputs",
+        "question": "How do `numpy.floor`, `numpy.ceil`, and `numpy.trunc` handle integer and boolean input arrays?",
+        "old_approach": "`numpy.floor`, `numpy.ceil`, and `numpy.trunc` might cast integer and boolean input arrays to a floating dtype.",
+        "new_approach": "`numpy.floor`, `numpy.ceil`, and `numpy.trunc` now avoid casting integer and boolean input arrays to a floating dtype."
+    },
+    {
+        "name": "ma.corrcoef result change",
+        "question": "How might the correlation coefficients calculated by `ma.corrcoef` differ from previous versions?",
+        "old_approach": "`ma.corrcoef` uses a pairwise observation approach for standard deviation normalization.",
+        "new_approach": "`ma.corrcoef` now uses the standard deviation for each variable for normalization, which may return slightly different estimates when observations are not aligned between pairs, but is faster and more appropriate."
+    },
+    {
+        "name": "Cast safety fixes in copyto and full",
+        "question": "How does NumPy's `copyto` and `full` handle safe casting, especially with Python scalars and NumPy scalars?",
+        "old_approach": "`copyto` and `full` had inconsistencies in cast safety checks, particularly with Python scalars and NumPy scalars.",
+        "new_approach": "`copyto` and `full` now correctly implement NEP 50 cast safety, treating Python integer/float to NumPy integer/float casts as safe (even if precision is lost) and aligning behavior with NumPy 2's casting rules for scalars."
+    },
+    {
+        "name": "Removal of np.geterrobj, np.seterrobj, and exrobj",
+        "question": "How can I manage error handling for NumPy operations, especially when dealing with floating-point exceptions?",
+        "old_approach": "The np.geterrobj() and np.seterrobj() functions, along with the ufunc keyword argument extobj=, are used for managing error handling and floating-point exceptions.",
+        "new_approach": "The context manager with np.errstate() is the preferred method for managing error handling and floating-point exceptions."
+    },
+    {
+        "name": "Removal of np.cast",
+        "question": "What is the recommended way to convert an array to a specific data type?",
+        "old_approach": "The np.cast[dtype](arg) syntax is used to convert an array to a specified data type.",
+        "new_approach": "Use np.asarray(arg, dtype=dtype) to convert an array to a specified data type."
+    },
+    {
+        "name": "Removal of np.source",
+        "question": "How can I programmatically retrieve the source code of a NumPy function?",
+        "old_approach": "The np.source function is used to retrieve the source code of a NumPy function.",
+        "new_approach": "Use the inspect.getsource() function from the standard library to retrieve the source code of a NumPy function."
+    },
+    {
+        "name": "Removal of np.lookfor",
+        "question": "Where can I find documentation or examples related to a specific NumPy functionality?",
+        "old_approach": "The np.lookfor() function searches for documentation and examples related to NumPy functionalities.",
+        "new_approach": "NumPy documentation and search functionality within IDEs or documentation platforms should be used."
+    },
+    {
+        "name": "Removal of np.who",
+        "question": "How can I inspect the variables and their properties in my current NumPy session?",
+        "old_approach": "The numpy.who() function inspects variables and their properties within a NumPy session.",
+        "new_approach": "Utilize variable explorer tools available in IDEs like Spyder or Jupyter Notebook for inspecting session variables."
+    },
+    {
+        "name": "Removal of np.float_, np.complex_, np.longfloat aliases",
+        "question": "What are the canonical names for NumPy's floating-point and complex data types?",
+        "old_approach": "Aliases such as np.float_, np.complex_, and np.longfloat are used to refer to NumPy's floating-point and complex data types.",
+        "new_approach": "Use canonical dtype names like np.float64, np.complex128, and np.longdouble for floating-point and complex data types."
+    },
+    {
+        "name": "Removal of np.singlecomplex, np.cfloat, np.longcomplex, np.clongfloat aliases",
+        "question": "How do I refer to NumPy's complex number data types with specific precision?",
+        "old_approach": "Aliases like np.singlecomplex, np.cfloat, np.longcomplex, and np.clongfloat are used for complex number data types.",
+        "new_approach": "Use np.complex64, np.complex128, and np.clongdouble for referring to complex number data types with specific precision."
+    },
+    {
+        "name": "Removal of np.string_, np.unicode_ aliases",
+        "question": "What are the recommended names for NumPy's string data types?",
+        "old_approach": "Aliases like np.string_ and np.unicode_ are used for NumPy's string data types.",
+        "new_approach": "Use np.bytes_ for byte strings and np.str_ for Unicode strings."
+    },
+    {
+        "name": "Removal of np.Inf, np.Infinity, np.NaN, np.infty aliases",
+        "question": "How can I represent infinity and Not a Number (NaN) in NumPy?",
+        "old_approach": "Aliases such as np.Inf, np.Infinity, np.NaN, and np.infty are used to represent infinity and Not a Number.",
+        "new_approach": "Use np.inf for infinity and np.nan for Not a Number."
+    },
+    {
+        "name": "Removal of np.mat alias",
+        "question": "What is the current method for converting an array-like object into a NumPy matrix?",
+        "old_approach": "The np.mat() function is used to convert an array-like object into a NumPy matrix.",
+        "new_approach": "Use np.asmatrix() to convert an array-like object into a NumPy matrix."
+    },
+    {
+        "name": "Removal of np.issubclass_",
+        "question": "How can I check if one data type is a subclass of another in Python?",
+        "old_approach": "The np.issubclass_() function is used to check if a data type is a subclass of another.",
+        "new_approach": "Use the built-in Python issubclass() function for checking subclass relationships."
+    },
+    {
+        "name": "Removal of np.asfarray",
+        "question": "What is the standard way to convert an array to floating-point numbers?",
+        "old_approach": "The np.asfarray() function is used to convert an array to floating-point numbers.",
+        "new_approach": "Use np.asarray() with a specified floating-point dtype to convert an array."
+    },
+    {
+        "name": "Removal of np.set_string_function",
+        "question": "How can I customize the string representation of NumPy objects for printing?",
+        "old_approach": "The np.set_string_function() allows customization of the string representation for NumPy objects.",
+        "new_approach": "Use np.set_printoptions() with a formatter to customize the printing of NumPy objects."
+    },
+    {
+        "name": "Removal of np.recfromcsv and np.recfromtxt from main namespace",
+        "question": "How can I load data from CSV or text files into structured NumPy arrays?",
+        "old_approach": "np.recfromcsv() and np.recfromtxt() are used to load data from CSV or text files.",
+        "new_approach": "Use np.genfromtxt() and specify the delimiter for CSV files."
+    },
+    {
+        "name": "Removal of niche type-checking functions",
+        "question": "How can I check if a NumPy data type belongs to a specific category of scalar types?",
+        "old_approach": "Niche functions like np.issctype, np.maximum_sctype, np.obj2sctype, np.sctype2char, np.sctypes, and np.issubsctype were available for type checking.",
+        "new_approach": "Use canonical dtype names and standard Python type checking methods."
+    },
+    {
+        "name": "Removal of np.deprecate and np.deprecate_with_doc",
+        "question": "How can I issue warnings about deprecated features in my code?",
+        "old_approach": "The np.deprecate() and np.deprecate_with_doc() functions are used to issue deprecation warnings.",
+        "new_approach": "Use the standard Python DeprecationWarning for issuing deprecation warnings."
+    },
+    {
+        "name": "Removal of np.safe_eval",
+        "question": "How can I safely evaluate a string containing a Python literal?",
+        "old_approach": "The np.safe_eval() function safely evaluates a string containing a Python literal.",
+        "new_approach": "Use ast.literal_eval() from the standard library's ast module for safely evaluating literals."
+    },
+    {
+        "name": "Removal of np.find_common_type",
+        "question": "How can I determine the common data type for a sequence of arrays or scalars?",
+        "old_approach": "The np.find_common_type() function determines the common data type for inputs.",
+        "new_approach": "Use np.promote_types() or np.result_type() to determine the common data type."
+    },
+    {
+        "name": "Removal of np.round_",
+        "question": "How do I round array elements to a specified number of decimal places?",
+        "old_approach": "The np.round_() function rounds array elements to a specified number of decimal places.",
+        "new_approach": "Use np.round() to round array elements."
+    },
+    {
+        "name": "Removal of np.nbytes",
+        "question": "How can I find the size in bytes of a single element of a NumPy array?",
+        "old_approach": "The np.nbytes() function returns the size in bytes of a single element.",
+        "new_approach": "Use np.dtype(<dtype>).itemsize to get the size in bytes of a single element."
+    },
+    {
+        "name": "Removal of np.compare_chararrays",
+        "question": "How can I compare elements of two character arrays?",
+        "old_approach": "The np.compare_chararrays() function compares elements of two character arrays.",
+        "new_approach": "Use np.char.compare_chararrays() for comparing elements of character arrays."
+    },
+    {
+        "name": "Deprecation of chararray in main namespace",
+        "question": "How do I create and manipulate character arrays in NumPy?",
+        "old_approach": "The chararray in the main NumPy namespace is used for character arrays.",
+        "new_approach": "Import chararray from np.char.chararray for character array manipulation."
+    },
+    {
+        "name": "Removal of np.format_parser",
+        "question": "How can I parse string formats for structured arrays in NumPy?",
+        "old_approach": "The np.format_parser() function is used for parsing string formats for structured arrays.",
+        "new_approach": "Use np.rec.format_parser() for parsing string formats for structured arrays."
+    },
+    {
+        "name": "Removal of niche dtype string aliases",
+        "question": "What are the standard ways to specify NumPy data types for integers, unsigned integers, and booleans?",
+        "old_approach": "Aliases like int0, uint0, void0, object0, str0, bytes0, and bool8 were used to specify certain data types.",
+        "new_approach": "Use canonical dtype names such as np.int8, np.uint8, np.object_, np.bytes_, and np.bool_."
+    },
+    {
+        "name": "Removal of numpy.array_api submodule",
+        "question": "Where can I find the NumPy implementation that adheres to the Array API standard?",
+        "old_approach": "The experimental numpy.array_api submodule provided Array API standard compliance.",
+        "new_approach": "Use the main numpy namespace for general usage, or the array-api-strict package for compliance testing."
+    },
+    {
+        "name": "Removal of __array_prepare__",
+        "question": "How can I control the preparation of arrays before and after ufunc operations?",
+        "old_approach": "The __array_prepare__ special method is called before computations in ufuncs and for results of some linear algebra functions.",
+        "new_approach": "Migrate to using __array_ufunc__ or rely on __array_wrap__, which is called after the result array is filled."
+    },
+    {
+        "name": "Deprecation of np.compat",
+        "question": "How should I handle compatibility with older NumPy versions, especially for code that relied on Python 2 features?",
+        "old_approach": "The np.compat module was used for compatibility with older NumPy versions and Python 2.",
+        "new_approach": "Modernize code to remove Python 2 dependencies and use current NumPy features."
+    },
+    {
+        "name": "Deprecation of out-of-bounds integer conversion",
+        "question": "What happens when I try to convert an out-of-bounds Python integer to a NumPy integer array?",
+        "old_approach": "NumPy integer types like numpy.int8 allowed conversion of out-of-bounds Python integers, often wrapping around.",
+        "new_approach": "Use np.iinfo(dtype) to check machine limits and explicitly handle conversions using np.array(value).astype(dtype) for predictable results."
+    },
+    {
+        "name": "Deprecation of np.recfromcsv, np.recfromtxt, np.disp, np.get_array_wrap, np.maximum_sctype, np.deprecate, np.deprecate_with_doc",
+        "question": "What are the recommended alternatives for loading data, displaying arrays, managing array wrapping, and checking types?",
+        "old_approach": "Functions like np.recfromcsv, np.recfromtxt, np.disp, np.get_array_wrap, np.maximum_sctype, np.deprecate, and np.deprecate_with_doc are deprecated.",
+        "new_approach": "Use np.genfromtxt for data loading, standard print() for display, and newer APIs for type checking and deprecation warnings."
+    },
+    {
+        "name": "Deprecation of np.trapz",
+        "question": "How can I numerically integrate a function represented by discrete data points?",
+        "old_approach": "The np.trapz() function is used for numerical integration using the trapezoidal rule.",
+        "new_approach": "Use np.trapezoid() or a function from scipy.integrate for numerical integration."
+    },
+    {
+        "name": "Deprecation of np.in1d",
+        "question": "How can I check if elements of one array are present in another array?",
+        "old_approach": "The np.in1d() function checks for the presence of elements from one array within another.",
+        "new_approach": "Use np.isin() to check for the presence of elements."
+    },
+    {
+        "name": "Deprecation of np.row_stack alias",
+        "question": "What is the preferred function for vertically stacking arrays?",
+        "old_approach": "The alias np.row_stack is used for vertically stacking arrays.",
+        "new_approach": "Use np.vstack() directly for vertical stacking."
+    },
+    {
+        "name": "Deprecation of __array_wrap__ signature",
+        "question": "How should the __array_wrap__ method be implemented for custom array objects?",
+        "old_approach": "The __array_wrap__ method's signature and behavior were less strict, potentially causing issues with arguments.",
+        "new_approach": "Implement __array_wrap__(self, arr, context=None, return_scalar=False) to accept all three arguments for consistency."
+    },
+    {
+        "name": "Deprecation of 2D vector cross products",
+        "question": "How should I calculate the cross product of vectors in NumPy?",
+        "old_approach": "Arrays of 2-dimensional vectors were previously supported for np.cross.",
+        "new_approach": "Use arrays of 3-dimensional vectors for np.cross calculations."
+    },
+    {
+        "name": "Deprecation of np.dtype(\"a\") alias",
+        "question": "What is the recommended way to specify a byte string data type in NumPy?",
+        "old_approach": "The alias np.dtype(\"a\") was used for byte string data types.",
+        "new_approach": "Use the np.dtype(\"S\") alias for byte string data types."
+    },
+    {
+        "name": "Deprecation of keyword arguments in testing functions",
+        "question": "How should I pass arrays to NumPy's assertion functions like assert_array_equal?",
+        "old_approach": "Keyword arguments like 'x' and 'y' were used to pass arrays to assert_array_equal and assert_array_almost_equal.",
+        "new_approach": "Pass the first two array arguments positionally instead of using keywords."
+    },
+    {
+        "name": "Deprecation of np.fft arguments s and axes",
+        "question": "How should I specify the shape and axes for n-dimensional FFT transforms when not all dimensions are defined?",
+        "old_approach": "Passing a sequence to 's' with None values or using s with None and axes=None was common for n-D FFT transforms.",
+        "new_approach": "Pass a sequence [0, ..., k-1] to 'axes' for an array of dimension k, or omit 's' to use default behavior for all axes."
+    },
+    {
+        "name": "Change in np.linalg.lstsq rcond default",
+        "question": "How does NumPy's linear least squares solver handle the condition number threshold?",
+        "old_approach": "The np.linalg.lstsq() function used machine precision as the default for the rcond parameter, with a FutureWarning.",
+        "new_approach": "np.linalg.lstsq() now defaults to machine precision times max(M, N), providing a more robust threshold. Use rcond=-1 to retain the old behavior."
+    },
+    {
+        "name": "Removal of np.core.umath_tests submodule",
+        "question": "Where can I find functions for testing umath operations?",
+        "old_approach": "The np.core.umath_tests submodule contained functions for testing umath operations.",
+        "new_approach": "Utilize the general testing utilities available in the numpy.testing module."
+    },
+    {
+        "name": "Removal of PyDataMem_SetEventHook",
+        "question": "How can I monitor memory allocation events within NumPy?",
+        "old_approach": "The PyDataMem_SetEventHook function was used for monitoring memory allocation events.",
+        "new_approach": "Use the tracemalloc module and the np.lib.tracemalloc_domain for monitoring memory allocations."
+    },
+    {
+        "name": "Removal of np.set_numeric_ops and related C functions",
+        "question": "How can I customize the numeric operations used by NumPy arrays?",
+        "old_approach": "np.set_numeric_ops() and related C functions allowed customization of NumPy's numeric operations.",
+        "new_approach": "NumPy's numeric operations are now more fixed; consider using alternatives or custom implementations if deep customization is required."
+    },
+    {
+        "name": "Removal of fasttake, fastclip, fastputmask ArrFuncs deprecation",
+        "question": "How are fast element-wise operations handled in NumPy's internal array functions?",
+        "old_approach": "Deprecated ArrFuncs like fasttake, fastclip, and fastputmask were part of NumPy's internal fast operations.",
+        "new_approach": "NumPy's internal optimizations have evolved; rely on public API functions for element-wise operations."
+    },
+    {
+        "name": "Removal of fastCopyAndTranspose",
+        "question": "How can I efficiently perform a copy and transpose operation on a NumPy array?",
+        "old_approach": "The deprecated function fastCopyAndTranspose was available for efficient copy and transpose operations.",
+        "new_approach": "Use standard array operations like .T and .copy() for transpose and copy functionality."
+    },
+    {
+        "name": "Removal of PyArray_ScalarFromObject",
+        "question": "How can I create a NumPy scalar object from an arbitrary Python object?",
+        "old_approach": "The PyArray_ScalarFromObject C API function was used to create NumPy scalar objects.",
+        "new_approach": "Use NumPy's public API functions for creating scalar objects, such as np.array(obj)."
+    },
+    {
+        "name": "Removal of np.msort",
+        "question": "How can I sort a NumPy array along the first axis?",
+        "old_approach": "The np.msort() function sorts a NumPy array along the first axis.",
+        "new_approach": "Use np.sort(a, axis=0) to sort an array along the first axis."
+    },
+    {
+        "name": "Change in np.dtype(\"(f8\", 1) behavior",
+        "question": "How does NumPy interpret a dtype string with a shape specification like \"(f8\", 1)?",
+        "old_approach": "np.dtype(\"(f8\", 1) previously returned a non-subarray dtype.",
+        "new_approach": "np.dtype(\"(f8\", 1) now returns a shape 1 subarray dtype, consistent with tuple-based shape specifications."
+    },
+    {
+        "name": "Disallowing assignment to .data attribute",
+        "question": "Can I modify the memory buffer of a NumPy array directly through the .data attribute?",
+        "old_approach": "It was previously possible to assign to the .data attribute of a NumPy ndarray.",
+        "new_approach": "Assignment to the .data attribute of an ndarray is now disallowed and will raise an error."
+    },
+    {
+        "name": "np.binary_repr raises error for insufficient width",
+        "question": "What happens if the specified width is too small when converting an integer to its binary representation?",
+        "old_approach": "np.binary_repr(a, width) would not raise an error even if the width was too small.",
+        "new_approach": "np.binary_repr(a, width) will now raise an error if the specified width is too small to represent the integer."
+    },
+    {
+        "name": "Removal of NPY_CHAR from PyArray_DescrFromType",
+        "question": "How should I specify character-based data types in NumPy's C API?",
+        "old_approach": "Using NPY_CHAR in PyArray_DescrFromType() was a way to specify character data types.",
+        "new_approach": "Use NPY_STRING, NPY_UNICODE, or NPY_VSTRING instead of NPY_CHAR for specifying character data types in the C API."
+    },
+    {
+        "name": "Removal of C API array accessors from ndarraytypes.h",
+        "question": "Where can I find the C API functions for accessing NumPy array properties?",
+        "old_approach": "Array accessors were previously defined in ndarraytypes.h.",
+        "new_approach": "The C API array accessors are now only available as static inline functions after importing the NumPy API table (import_array())."
+    },
+    {
+        "name": "Changes to dtype flags access",
+        "question": "How should I access the flags associated with a NumPy dtype in C?",
+        "old_approach": "Direct access to dtype flags was possible in older NumPy versions.",
+        "new_approach": "Access dtype flags using the PyDataType_FLAGS inline function for compatibility or PyDataType_FLAGCHK for checking specific flags."
+    },
+    {
+        "name": "Addition of C API for datetime64",
+        "question": "How can I convert between Python datetime objects, strings, and NumPy datetime64 in C extensions?",
+        "old_approach": "There was no direct C API for complex conversions involving Python datetimes and NumPy datetime64.",
+        "new_approach": "New C API functions like NpyDatetime_ConvertPyDateTimeToDatetimeStruct and NpyDatetime_MakeISO8601Datetime facilitate these conversions."
+    },
+    {
+        "name": "Const correctness for generalized ufunc C API",
+        "question": "How has the C API for creating generalized ufuncs changed regarding constant arguments?",
+        "old_approach": "The 'types' and 'data' arguments in generalized ufunc creation functions were not marked as const.",
+        "new_approach": "The 'types' and 'data' arguments are now correctly marked as const, improving type safety, especially in C++."
+    },
+    {
+        "name": "Increased NPY_MAXDIMS and NPY_MAXARGS",
+        "question": "What is the new maximum number of dimensions allowed for NumPy arrays, and how should I handle axis arguments?",
+        "old_approach": "The maximum number of array dimensions was limited to 32, and large axis values sometimes behaved like axis=None.",
+        "new_approach": "The maximum number of dimensions is now 64. Use NPY_RAVEL_AXIS instead of large axis values for flattening operations."
+    },
+    {
+        "name": "NPY_MAXARGS runtime constant and PyArrayMultiIterObject size change",
+        "question": "How are the maximum number of arguments and iterator object sizes handled in NumPy's C API?",
+        "old_approach": "NPY_MAXARGS was a compile-time constant, and PyArrayMultiIterObject size included full object size.",
+        "new_approach": "NPY_MAXARGS is now a runtime constant. PyArrayMultiIterObject size no longer includes the full object size for Cython compatibility."
+    },
+    {
+        "name": "Required changes for custom legacy user dtypes",
+        "question": "What modifications are needed for custom data types registered with NumPy's C API?",
+        "old_approach": "Custom dtypes registered with PyArray_RegisterDataType had a different internal structure.",
+        "new_approach": "Adapt custom dtypes according to the updated PyArray_RegisterDataType documentation to ensure compatibility with NumPy 2.x and 1.x."
+    },
+    {
+        "name": "New Public DType API",
+        "question": "How can I create custom data types in NumPy using its C API?",
+        "old_approach": "Creating custom dtypes required specific environment variables and was not fully public.",
+        "new_approach": "The NEP 42 DType API is now public, allowing custom dtype creation using the standard import_array() mechanism."
+    },
+    {
+        "name": "New C-API import functions",
+        "question": "What are the modern ways to import NumPy's C API tables in extensions?",
+        "old_approach": "Macros like import_array() and import_ufunc() were used to import NumPy C API tables.",
+        "new_approach": "Use the new static inline functions PyArray_ImportNumPyAPI() and PyUFunc_ImportUFuncAPI() for more efficient and context-aware API table imports."
+    },
+    {
+        "name": "Structured dtype information access through functions",
+        "question": "How should I access information about structured NumPy data types in C?",
+        "old_approach": "Direct access to fields like .names, .fields, .subarray, and .c_metadata in PyArray_Descr was possible.",
+        "new_approach": "Use the new accessor functions like PyDataType_NAMES, PyDataType_FIELDS, PyDataType_SUBARRAY, and PyDataType_METADATA for structured dtype information."
+    },
+    {
+        "name": "Descriptor elsize and alignment access",
+        "question": "How can I get the element size and alignment of a NumPy data type in C?",
+        "old_approach": "Direct access to the .elsize and .alignment fields of the PyArray_Descr struct was used.",
+        "new_approach": "Use PyDataType_ELSIZE, PyDataType_SET_ELSIZE, and PyDataType_ALIGNMENT functions. For array-attached descriptors, use PyArray_ITEMSIZE."
+    },
+    {
+        "name": "Removal of npy_interrupt.h",
+        "question": "How can I handle interrupts within NumPy C extensions?",
+        "old_approach": "The npy_interrupt.h header and related macros like NPY_SIGINT_ON were used for interrupt handling.",
+        "new_approach": "Periodically check PyErr_CheckSignals() or PyOS_InterruptOccurred() for interrupt handling."
+    },
+    {
+        "name": "Removal of noprefix.h",
+        "question": "Where can I find the prefixed versions of NumPy's internal C API symbols?",
+        "old_approach": "The noprefix.h header provided access to certain NumPy C API symbols without prefixes.",
+        "new_approach": "Replace missing symbols with their prefixed counterparts (e.g., NPY_ prefix) by including the appropriate headers."
+    },
+    {
+        "name": "Removal of PyUFunc_GetPyVals and related functions",
+        "question": "How can I handle floating-point errors and retrieve ufunc values in the C API?",
+        "old_approach": "Functions like PyUFunc_GetPyVals, PyUFunc_handlefperr, and PyUFunc_checkfperr were used for error handling and value retrieval.",
+        "new_approach": "Use the np.errstate() context manager in Python for managing floating-point errors. Direct C API replacements are removed."
+    },
+    {
+        "name": "Removal of numpy/old_defines.h",
+        "question": "How should I reference NumPy's internal constants in C code?",
+        "old_approach": "The numpy/old_defines.h header contained macros like PyArray_CONSTANT.",
+        "new_approach": "Use the prefixed versions of constants, typically with an NPY_ prefix, by including the correct headers."
+    },
+    {
+        "name": "Removal of legacy_inner_loop_selector",
+        "question": "How does NumPy dispatch inner loops for ufuncs?",
+        "old_approach": "The legacy_inner_loop_selector member of the ufunc struct was used for dispatching.",
+        "new_approach": "NumPy's ufunc dispatching mechanism has been modernized; rely on the public API for ufunc operations."
+    },
+    {
+        "name": "Removal of NPY_INTPLTR",
+        "question": "What is the correct type for integer pointers in NumPy's C API?",
+        "old_approach": "NPY_INTPLTR was used for integer pointers, which could lead to confusion with redefinitions.",
+        "new_approach": "Use npy_intp or npy_uintp for integer pointers to avoid ambiguity."
+    },
+    {
+        "name": "Removal of advanced indexing MapIter API",
+        "question": "How is advanced indexing handled internally in NumPy's C API?",
+        "old_approach": "The MapIter API was used internally for advanced indexing.",
+        "new_approach": "NumPy's internal advanced indexing implementation has been refactored; rely on the public Python API for indexing operations."
+    },
+    {
+        "name": "Removal of NPY_MAX_ELSIZE",
+        "question": "How is the maximum element size of built-in numeric types handled in NumPy's C API?",
+        "old_approach": "The NPY_MAX_ELSIZE macro defined the maximum element size.",
+        "new_approach": "This macro has been removed as it only reflected built-in numeric types and is no longer needed."
+    },
+    {
+        "name": "Removal of PyArray_REFCNT and NPY_REFCOUNT",
+        "question": "How can I get the reference count of a NumPy array object in C?",
+        "old_approach": "PyArray_REFCNT and NPY_REFCOUNT were macros for getting the reference count.",
+        "new_approach": "Use the standard Python C API macro Py_REFCNT to get the reference count of NumPy array objects."
+    },
+    {
+        "name": "PyArrayFlags_Type and related functions made private",
+        "question": "How are NumPy array flags managed internally?",
+        "old_approach": "PyArrayFlags_Type, PyArray_NewFlagsObject, and PyArrayFlagsObject were used for managing array flags.",
+        "new_approach": "These components are now private. Use the public Python API for accessing and managing array flags."
+    },
+    {
+        "name": "Removal of PyArray_MoveInto, PyArray_CastTo, PyArray_CastAnyTo",
+        "question": "How can I efficiently copy data between arrays or cast between types in NumPy's C API?",
+        "old_approach": "Functions like PyArray_MoveInto, PyArray_CastTo, and PyArray_CastAnyTo were used for data movement and casting.",
+        "new_approach": "Use PyArray_CopyInto for copying data. For casting, consider PyArray_CopyAnyInto for flat copies or other appropriate casting mechanisms."
+    },
+    {
+        "name": "Removal of PyArray_FillObjectArray",
+        "question": "How can I create and initialize an empty NumPy array in C?",
+        "old_approach": "PyArray_FillObjectArray was used for filling object arrays.",
+        "new_approach": "Create a new empty array or use PyArray_FillWithScalar() which handles decref for existing objects."
+    },
+    {
+        "name": "Removal of PyArray_CompareUCS4 and PyArray_CompareString",
+        "question": "How can I compare Unicode and byte strings in C using NumPy's API?",
+        "old_approach": "PyArray_CompareUCS4 and PyArray_CompareString were NumPy's C API functions for string comparison.",
+        "new_approach": "Use standard C string comparison functions like strcmp() and wcscmp() for string comparisons."
+    },
+    {
+        "name": "Removal of PyArray_ISPYTHON",
+        "question": "How can I check if a NumPy array is a Python object array in C?",
+        "old_approach": "The PyArray_ISPYTHON macro was used to check if an array was a Python object array.",
+        "new_approach": "Check the dtype of the array or use other appropriate methods to determine if it holds Python objects."
+    },
+    {
+        "name": "Removal of PyArray_FieldNames",
+        "question": "How can I retrieve the names of fields in a structured NumPy array from C?",
+        "old_approach": "The PyArray_FieldNames function was available for retrieving field names.",
+        "new_approach": "Access field names through the dtype's structure using PyDataType_NAMES or equivalent Python-level access."
+    },
+    {
+        "name": "Removal of PyArray_TypestrConvert",
+        "question": "How can I convert type strings to NumPy data type codes in C?",
+        "old_approach": "PyArray_TypestrConvert was a function for converting type strings.",
+        "new_approach": "Explicitly use known type codes or convert type strings to NumPy dtypes via the Python API."
+    },
+    {
+        "name": "Removal of PyDataType_GetDatetimeMetaData",
+        "question": "How can I access metadata for datetime64 types in NumPy's C API?",
+        "old_approach": "PyDataType_GetDatetimeMetaData was a function for accessing datetime metadata.",
+        "new_approach": "This function is removed as it had no effect for many versions. Access datetime metadata through appropriate public C API functions if needed."
+    },
+    {
+        "name": "Removal of PyArray_GetCastFunc",
+        "question": "How can I obtain a casting function between NumPy data types in C?",
+        "old_approach": "PyArray_GetCastFunc provided a function pointer for casting between dtypes.",
+        "new_approach": "Direct casting can be done using C casts for simple numeric types. For more complex scenarios, consider creating new API functions like PyArray_CastBuffer."
+    },
+    {
+        "name": "np.add works with unicode and bytes dtypes",
+        "question": "Can I add strings together using NumPy's ufuncs?",
+        "old_approach": "np.add did not support unicode or bytes dtypes.",
+        "new_approach": "np.add now supports unicode and bytes dtypes, allowing string concatenation through the ufunc."
+    },
+    {
+        "name": "Addition of bitwise_count function",
+        "question": "How can I count the number of set bits (1s) in the binary representation of an integer?",
+        "old_approach": "There was no direct NumPy function to count set bits.",
+        "new_approach": "Use the new np.bitwise_count() function, which works on NumPy integer types and integer-like objects."
+    },
+    {
+        "name": "macOS Accelerate support",
+        "question": "How does NumPy leverage macOS's Accelerate framework for linear algebra?",
+        "old_approach": "NumPy's linear algebra operations on macOS relied on other BLAS implementations.",
+        "new_approach": "NumPy now utilizes the updated macOS Accelerate framework (including ILP64 support), significantly improving performance for linear algebra operations on arm64 architecture."
+    },
+    {
+        "name": "Weights for quantile and percentile functions",
+        "question": "How can I compute weighted quantiles and percentiles in NumPy?",
+        "old_approach": "Quantile and percentile functions did not support weighted calculations.",
+        "new_approach": "The 'weights' keyword argument is now available for np.quantile and np.percentile (and their nan- variants) when using method='inverted_cdf'."
+    },
+    {
+        "name": "Improved CPU optimization tracking",
+        "question": "How can I determine which CPU-specific optimizations NumPy is using for its functions?",
+        "old_approach": "It was difficult to programmatically determine which hardware-specific kernels NumPy was dispatching to.",
+        "new_approach": "The new np.lib.introspect.opt_func_info() function allows tracking and inspecting the enabled CPU dispatch targets for optimized NumPy functions."
+    },
+    {
+        "name": "New Meson backend for f2py",
+        "question": "How can I build Fortran code with f2py using the Meson build system?",
+        "old_approach": "f2py's compile mode defaulted to using the distutils build system.",
+        "new_approach": "f2py now supports a '--backend meson' option, which is the default for Python >=3.12, enabling integration with the Meson build system."
+    },
+    {
+        "name": "bind(c) support for f2py",
+        "question": "How can I ensure Fortran code interfaces correctly with C using f2py?",
+        "old_approach": "f2py had limited support for Fortran's 'bind(c)' directive.",
+        "new_approach": "f2py now correctly handles 'bind(c)' for both functions and subroutines, ensuring proper type mapping and C interface compatibility."
+    },
+    {
+        "name": "Strict option for testing functions",
+        "question": "How can I enforce stricter comparison rules in NumPy's testing assertion functions?",
+        "old_approach": "Assertion functions like assert_allclose allowed broadcasting of scalars and did not enforce dtype matching.",
+        "new_approach": "The 'strict=True' option disables scalar broadcasting and enforces matching data types for stricter comparisons in assert_allclose, assert_equal, and assert_array_less."
+    },
+    {
+        "name": "Add np.core.umath.find and np.core.umath.rfind",
+        "question": "How can I find the first or last occurrence of a substring within a NumPy array of strings?",
+        "old_approach": "There were no dedicated ufuncs for finding substrings in NumPy arrays.",
+        "new_approach": "The new np.core.umath.find() and np.core.umath.rfind() ufuncs provide functionality similar to str.find() and str.rfind() for NumPy string arrays."
+    },
+    {
+        "name": "diagonal and trace for numpy.linalg",
+        "question": "How can I compute the diagonal elements or the trace of matrices using NumPy's linear algebra module?",
+        "old_approach": "Diagonal and trace operations were available in the main NumPy namespace but not specifically within numpy.linalg with array API standard compatibility.",
+        "new_approach": "np.linalg.diagonal() and np.linalg.trace() provide array API standard-compatible versions for computing diagonals and traces, with adjusted default axis selection."
+    },
+    {
+        "name": "New long and ulong dtypes",
+        "question": "How does NumPy represent C's 'long' and 'unsigned long' integer types?",
+        "old_approach": "Prior to NumPy 1.24, np.long was an alias for Python's int.",
+        "new_approach": "New np.long and np.ulong dtypes are available, mapping directly to C's 'long' and 'unsigned long', improving type accuracy and compatibility."
+    },
+    {
+        "name": "svdvals for numpy.linalg",
+        "question": "How can I efficiently compute only the singular values of a matrix using NumPy's linear algebra module?",
+        "old_approach": "Computing singular values required using np.svd() and explicitly setting compute_uv=False.",
+        "new_approach": "The new np.linalg.svdvals() function directly computes singular values and is compatible with the array API standard."
+    },
+    {
+        "name": "A new isdtype function",
+        "question": "How can I reliably check if a NumPy data type conforms to the Array API standard?",
+        "old_approach": "There was no single, canonical function to check data type compliance with the Array API standard.",
+        "new_approach": "The new np.isdtype() function provides a standard way to classify NumPy dtypes according to the Array API standard."
+    },
+    {
+        "name": "A new astype function",
+        "question": "What is the recommended way to change the data type of a NumPy array while adhering to the Array API standard?",
+        "old_approach": "The ndarray.astype() method was used for changing data types.",
+        "new_approach": "Use the new np.astype() function, which is an Array API standard-compatible alternative to ndarray.astype()."
+    },
+    {
+        "name": "Array API compatible functions' aliases",
+        "question": "How can I use NumPy functions that are compatible with the Array API standard?",
+        "old_approach": "Specific aliases for Array API standard functions were not consistently available.",
+        "new_approach": "Aliases for 13 Array API standard-compatible functions (e.g., acos, asin, bitwise_left_shift, concat, pow) have been added to the main NumPy namespace."
+    },
+    {
+        "name": "New unique_* functions",
+        "question": "How can I find unique elements in an array and get associated information like counts or indices?",
+        "old_approach": "The np.unique() function provided various options, but returning different sets of information could be inconsistent.",
+        "new_approach": "New functions like np.unique_all(), np.unique_counts(), np.unique_inverse(), and np.unique_values() offer distinct, Array API standard-compatible ways to retrieve unique elements and related data."
+    },
+    {
+        "name": "Matrix transpose support for ndarrays",
+        "question": "How can I compute the matrix transpose of a NumPy array?",
+        "old_approach": "Matrix transpose was primarily associated with the np.matrix type.",
+        "new_approach": "NumPy ndarrays now have a .mT attribute and a np.matrix_transpose() function for computing the matrix transpose (swapping the last two axes)."
+    },
+    {
+        "name": "Array API compatible functions for numpy.linalg",
+        "question": "What are the Array API standard-compliant functions for linear algebra operations in NumPy?",
+        "old_approach": "Certain linear algebra functions lacked direct Array API standard compatibility.",
+        "new_approach": "New functions like np.linalg.matrix_norm(), np.linalg.vector_norm(), np.vecdot(), np.linalg.vecdot(), np.linalg.matrix_transpose(), and np.linalg.outer() are now available and compatible with the Array API standard."
+    },
+    {
+        "name": "A correction argument for var and std",
+        "question": "How can I calculate the variance and standard deviation with Bessel's correction in NumPy?",
+        "old_approach": "The 'ddof' parameter controlled Bessel's correction, but a more descriptive name was needed.",
+        "new_approach": "The 'correction' keyword argument is now available in np.var() and np.std() as an Array API standard-compatible alternative to 'ddof'."
+    },
+    {
+        "name": "ndarray.device and ndarray.to_device",
+        "question": "How can I specify the device for NumPy arrays, especially for compatibility with the Array API standard?",
+        "old_approach": "Device specification was not a standard feature of NumPy arrays.",
+        "new_approach": "The ndarray.device attribute and ndarray.to_device() method have been added for Array API standard compatibility, supporting 'cpu' devices."
+    },
+    {
+        "name": "StringDType has been added to NumPy",
+        "question": "How can I create NumPy arrays that store variable-length UTF-8 encoded strings?",
+        "old_approach": "Variable-length strings often required using the object dtype with Python strings.",
+        "new_approach": "The new StringDType provides a dedicated, efficient way to store variable-length UTF-8 encoded strings in NumPy arrays."
+    },
+    {
+        "name": "New keywords for cholesky and pinv",
+        "question": "How can I control the behavior of Cholesky decomposition and pseudoinverse calculations in NumPy?",
+        "old_approach": "Keywords like 'upper' for cholesky and 'rcond' for pinv were available, but 'rtol' was needed for Array API compatibility.",
+        "new_approach": "A new 'rtol' keyword argument has been added to np.linalg.pinv() for Array API standard compatibility. The 'rcond' parameter is planned for deprecation."
+    },
+    {
+        "name": "New keywords for sort, argsort and linalg.matrix_rank",
+        "question": "How can I ensure stable sorting and control precision in matrix rank calculations?",
+        "old_approach": "Stable sorting and relative tolerance options were not consistently available or clearly named.",
+        "new_approach": "A 'stable' keyword has been added to np.sort() and np.argsort() for stable sorting. 'rtol' has been added to np.linalg.matrix_rank() for precision control, improving Array API standard compatibility."
+    },
+    {
+        "name": "New numpy.strings namespace for string ufuncs",
+        "question": "Where can I find efficient ufuncs for string manipulations in NumPy?",
+        "old_approach": "String operations were primarily in the np.char namespace, which was less performant for some operations.",
+        "new_approach": "The new np.strings namespace provides performant ufuncs for string operations, with suggestions to migrate from np.char where possible."
+    },
+    {
+        "name": "numpy.fft support for different precisions and in-place calculations",
+        "question": "How does NumPy's FFT module handle different precision levels and in-place computations?",
+        "old_approach": "FFT calculations often defaulted to double precision, and in-place computation was not directly supported via an 'out' argument.",
+        "new_approach": "NumPy's FFT routines now natively support float, double, and long double precision, adjusting output type accordingly. An 'out' argument enables in-place calculations."
+    },
+    {
+        "name": "configtool and pkg-config support",
+        "question": "How can build systems easily find NumPy's include paths and library information?",
+        "old_approach": "Discovering NumPy's C API compilation flags was often manual or inconsistent.",
+        "new_approach": "A new 'numpy-config' CLI script and a 'numpy.pc' pkg-config file are provided, simplifying the process of finding NumPy's compile flags for build systems."
+    },
+    {
+        "name": "Array API standard support in the main namespace",
+        "question": "Can I use NumPy functions that conform to the Array API standard directly from the main 'numpy' namespace?",
+        "old_approach": "Array API standard compliance was primarily handled through specific submodules or interfaces.",
+        "new_approach": "The main 'numpy' namespace now provides Array API standard-compatible functions, simplifying compliance and usage."
+    },
+    {
+        "name": "Strings supported by any, all, and logical ufuncs",
+        "question": "Can NumPy's logical reduction functions (any, all) operate on arrays of strings?",
+        "old_approach": "The 'any' and 'all' functions did not directly support string arrays for logical reduction.",
+        "new_approach": "String arrays are now supported by np.any(), np.all(), and the logical ufuncs, providing boolean results based on string content (non-empty is True)."
+    },
+    {
+        "name": "Integer sequences for memmap shape",
+        "question": "Can I specify the shape of a memory-mapped file using a list or NumPy array?",
+        "old_approach": "The shape argument for np.memmap() was restricted to tuples and integers.",
+        "new_approach": "np.memmap() now accepts any integer sequence, including lists and NumPy arrays, for the 'shape' argument."
+    },
+    {
+        "name": "errstate is now faster and context safe",
+        "question": "How does NumPy's error state management context manager function?",
+        "old_approach": "The np.errstate() context manager had potential thread-safety issues and was not fully context-safe.",
+        "new_approach": "np.errstate() is now faster, context-safe, and thread-safe, ensuring reliable error handling within nested contexts."
+    },
+    {
+        "name": "AArch64 quicksort speed improved",
+        "question": "How has NumPy's sorting performance improved on ARM64 processors?",
+        "old_approach": "NumPy's quicksort implementation on AArch64 was not optimized with advanced vector instructions.",
+        "new_approach": "NumPy now utilizes Highway's VQSort on AArch64, leading to significant speed improvements in sorting operations."
+    },
+    {
+        "name": "Complex types - underlying C type changes",
+        "question": "How are complex numbers represented internally in NumPy's C API?",
+        "old_approach": "NumPy used its own complex types, requiring specific macros for real/imaginary parts.",
+        "new_approach": "NumPy now uses C99 complex types, requiring the use of npy_math.h utilities (e.g., npy_csetreal) for accessing real and imaginary parts."
+    },
+    {
+        "name": "iso_c_binding support and improved common blocks for f2py",
+        "question": "How does f2py handle Fortran's 'iso_c_binding' module and common blocks?",
+        "old_approach": "f2py required custom mapping files for 'iso_c_binding' and had limited support for common blocks with kind specifications.",
+        "new_approach": "f2py now natively supports 'iso_c_binding' type mappings and improved handling of common blocks with 'kind' specifications."
+    },
+    {
+        "name": "Call str automatically on third argument to functions like assert_equal",
+        "question": "How are descriptive messages handled in NumPy's assertion functions?",
+        "old_approach": "The third argument to assertion functions like assert_equal was passed directly without automatic string conversion.",
+        "new_approach": "The third argument (message) to assertion functions is now automatically converted to a string, similar to Python's assert statement."
+    },
+    {
+        "name": "Support for array-like atol/rtol in isclose, allclose",
+        "question": "Can I use arrays to specify tolerances for comparing floating-point numbers in NumPy?",
+        "old_approach": "atol and rtol parameters in isclose and allclose only accepted scalar values.",
+        "new_approach": "The atol and rtol parameters in np.isclose() and np.allclose() now accept array-like inputs that broadcast to the comparison arrays."
+    },
+    {
+        "name": "Consistent failure messages in test functions",
+        "question": "How are failure messages formatted in NumPy's testing functions?",
+        "old_approach": "Failure messages in some np.testing assertions referred to actual and desired results as 'x' and 'y'.",
+        "new_approach": "Failure messages in np.testing assertions are now consistently formatted using 'ACTUAL' and 'DESIRED' for clarity."
+    },
+    {
+        "name": "n-D FFT transforms allow s[i] == -1",
+        "question": "How does NumPy's n-D FFT handle undefined dimensions in the shape parameter?",
+        "old_approach": "Passing s[i] == -1 in n-D FFT functions could lead to ambiguous behavior.",
+        "new_approach": "n-D FFT transforms now correctly interpret s[i] == -1 to use the full input array dimension along that axis, consistent with the Array API standard."
+    },
+    {
+        "name": "Guard PyArrayScalar_VAL and PyUnicodeScalarObject for the limited API",
+        "question": "How are NumPy scalar values handled when building with the limited C API?",
+        "old_approach": "PyUnicodeScalarObject was directly exposed, potentially causing issues with the limited API.",
+        "new_approach": "PyUnicodeScalarObject and PyArrayScalar_VAL are now guarded, ensuring proper behavior when NumPy is built with the Py_LIMITED_API flag."
+    },
+    {
+        "name": "np.gradient return type change",
+        "question": "What is the return type of np.gradient()?",
+        "old_approach": "np.gradient() returned a list of arrays.",
+        "new_approach": "np.gradient() now returns a tuple of arrays, making the return value immutable."
+    },
+    {
+        "name": "errstate context safety",
+        "question": "Can I safely nest np.errstate contexts?",
+        "old_approach": "Nesting np.errstate contexts could lead to unexpected behavior due to lack of full context safety.",
+        "new_approach": "np.errstate() is now fully context-safe, allowing safe nesting of error handling contexts."
+    },
+    {
+        "name": "Introduction of np.lib.array_utils",
+        "question": "Where can I find utility functions for NumPy array manipulation and validation?",
+        "old_approach": "Some array utility functions were scattered in modules like np.lib.utils.",
+        "new_approach": "The new np.lib.array_utils submodule centralizes utility functions like byte_bounds, normalize_axis_tuple, and normalize_axis_index."
+    },
+    {
+        "name": "Canonical name for NumPy's boolean dtype",
+        "question": "What is the recommended way to refer to NumPy's boolean data type?",
+        "old_approach": "np.bool was previously an alias for Python's bool, and np.bool_ was used for NumPy's boolean.",
+        "new_approach": "np.bool is now the canonical name for NumPy's boolean dtype, with np.bool_ as an alias, improving consistency and Array API compatibility."
+    },
+    {
+        "name": "Change in dtype flags internal storage",
+        "question": "How are internal flags for NumPy data types stored?",
+        "old_approach": "Dtype flags were stored as signed integers, potentially causing issues with alignment.",
+        "new_approach": "Dtype flags are now stored as unsigned integers, resolving potential issues with alignment and ensuring correct flag interpretation."
+    },
+    {
+        "name": "Representation of NumPy scalars changed",
+        "question": "How are NumPy scalar values represented when printed?",
+        "old_approach": "NumPy scalars were printed without explicit type information (e.g., 3.0).",
+        "new_approach": "NumPy scalars are now printed with type information (e.g., np.float64(3.0)) to distinguish them from Python scalars."
+    },
+    {
+        "name": "Truthiness of NumPy strings changed",
+        "question": "How is the truthiness (conversion to boolean) of NumPy string arrays determined?",
+        "old_approach": "NumPy strings had inconsistent truthiness, sometimes based on integer conversion or ignoring whitespace.",
+        "new_approach": "NumPy strings are now considered True if non-empty and False if empty, aligning with Python's boolean evaluation of strings."
+    },
+    {
+        "name": "A mean keyword was added to var and std function",
+        "question": "How can I efficiently calculate variance and standard deviation when the mean is already known?",
+        "old_approach": "Calculating variance and standard deviation required computing the mean separately.",
+        "new_approach": "The 'mean' keyword argument can now be used in np.var() and np.std() to provide a pre-calculated mean, improving efficiency."
+    },
+    {
+        "name": "Remove datetime64 deprecation warning when constructing with timezone",
+        "question": "What warning is issued when creating datetime64 objects with timezones?",
+        "old_approach": "Constructing datetime64 with timezones previously issued a DeprecationWarning.",
+        "new_approach": "Constructing datetime64 with timezones now issues a UserWarning, indicating it's a sensitive operation but not strictly deprecated."
+    },
+    {
+        "name": "Default integer dtype is now 64-bit on 64-bit Windows",
+        "question": "What is the default integer size for NumPy on Windows systems?",
+        "old_approach": "On 64-bit Windows, NumPy defaulted to 32-bit integers.",
+        "new_approach": "The default integer size is now 64-bit on all 64-bit systems, including Windows, for consistency and to avoid issues with compiled code."
+    },
+    {
+        "name": "Renamed numpy.core to numpy._core",
+        "question": "How should I access NumPy's internal core functionalities?",
+        "old_approach": "The internal numpy.core module was directly accessible.",
+        "new_approach": "Access internal core functionalities via the private `numpy._core` module; direct access to `numpy.core` is deprecated."
+    },
+    {
+        "name": "Redefinition of np.intp/np.uintp",
+        "question": "What are the underlying C types for NumPy's integer pointer types?",
+        "old_approach": "np.intp and np.uintp were previously defined based on intptr_t/uintptr_t.",
+        "new_approach": "np.intp and np.uintp are now based on size_t/Py_ssize_t, aligning with common C pointer usage and avoiding potential issues."
+    },
+    {
+        "name": "numpy.fft.helper made private",
+        "question": "Where should I import helper functions for NumPy's FFT module from?",
+        "old_approach": "Helper functions were sometimes imported from numpy.fft.helper.",
+        "new_approach": "Helper functions for the FFT module are now internal and should be accessed via the public numpy.fft namespace."
+    },
+    {
+        "name": "numpy.linalg.linalg made private",
+        "question": "Where should I import core linear algebra functions from in NumPy?",
+        "old_approach": "Core linear algebra functions were sometimes imported from numpy.linalg.linalg.",
+        "new_approach": "Core linear algebra functions are now internal and should be accessed via the public numpy.linalg namespace."
+    },
+    {
+        "name": "Out-of-bound axis not the same as axis=None",
+        "question": "How should I specify axes for operations that reduce dimensions in NumPy?",
+        "old_approach": "Large axis values (e.g., 32) sometimes behaved like axis=None for reduction operations.",
+        "new_approach": "Out-of-bound axis values will now raise an error; use axis=None explicitly for operations that reduce all dimensions."
+    },
+    {
+        "name": "New copy keyword meaning for array and asarray constructors",
+        "question": "How does the 'copy' argument affect array creation with np.array() and np.asarray()?",
+        "old_approach": "The 'copy=False' argument in np.array() and np.asarray() would attempt to avoid copying but might not raise an error if a copy was needed.",
+        "new_approach": "The 'copy' parameter now supports three modes: None (copy if necessary), True (always copy), and False (never copy, raises ValueError if a copy is required)."
+    },
+    {
+        "name": "The __array__ special method now takes a copy keyword argument.",
+        "question": "How should objects implementing the __array__ protocol handle copy requests?",
+        "old_approach": "The __array__ method did not consistently receive or handle a 'copy' keyword argument.",
+        "new_approach": "Objects implementing __array__ should now accept a 'copy' keyword argument, mirroring the behavior of np.array() and np.asarray(), to control whether a copy is made."
+    },
+    {
+        "name": "Cleanup of initialization of numpy.dtype with strings with commas",
+        "question": "How does NumPy parse dtype strings containing commas?",
+        "old_approach": "Trailing commas in dtype strings like \"i,\" were treated identically to non-trailing ones, potentially leading to ambiguity.",
+        "new_approach": "A trailing comma in a dtype string now consistently creates a structured dtype, similar to tuple syntax, improving parsing consistency."
+    },
+    {
+        "name": "Change in how complex sign is calculated",
+        "question": "How is the sign of a complex number determined in NumPy?",
+        "old_approach": "The sign of a complex number was based on the sign of the real part, with a fallback to the imaginary part.",
+        "new_approach": "The sign of a complex number is now calculated as z / |z|, consistent with the Array API standard, returning zero if z is zero."
+    },
+    {
+        "name": "Return types of functions that returned a list of arrays",
+        "question": "What is the return type for functions that output multiple arrays in NumPy?",
+        "old_approach": "Functions like np.atleast_1d, np.broadcast_arrays, and np.meshgrid returned a list of arrays.",
+        "new_approach": "These functions now return a tuple of arrays, providing immutability and better compatibility with JIT compilers and type checkers."
+    },
+    {
+        "name": "np.unique return_inverse shape for multi-dimensional inputs",
+        "question": "How is the shape of the inverse array determined when using np.unique with multi-dimensional inputs?",
+        "old_approach": "The shape of the inverse array from np.unique with multi-dimensional inputs was not always consistent for reconstruction.",
+        "new_approach": "The inverse array's shape is now consistent for reconstruction using np.take() or np.take_along_axis(), ensuring correct array rebuilding."
+    },
+    {
+        "name": "any and all return booleans for object arrays",
+        "question": "What is the return type of np.any() and np.all() when operating on object arrays?",
+        "old_approach": "np.any() and np.all() returned one of the array elements for object arrays, mimicking Python's 'or' and 'and'.",
+        "new_approach": "np.any() and np.all() now return boolean values for object arrays, indicating if any or all elements evaluate to True."
+    },
+    {
+        "name": "np.can_cast cannot be called on Python int, float, or complex",
+        "question": "Can I check type casting possibilities for Python's built-in numeric types using np.can_cast?",
+        "old_approach": "np.can_cast could be called with Python int, float, or complex instances.",
+        "new_approach": "np.can_cast cannot be called with Python int, float, or complex instances due to changes in type promotion rules (NEP 50)."
+    },
+    {
+        "name": "Dedicated string data type by default",
+        "question": "How can I ensure my string columns are consistently handled as a dedicated string type instead of a general object type?",
+        "old_approach": "Pandas historically represented string columns with NumPy's object data type.",
+        "new_approach": "Pandas will introduce a dedicated string data type by default in version 3.0, inferred from string data in columns."
+    },
+    {
+        "name": "Copy-on-Write behavior",
+        "question": "How can I ensure that modifications to a DataFrame or Series do not unexpectedly affect other parts of my data?",
+        "old_approach": "The behavior of copies and views in pandas operations could sometimes lead to unexpected modifications.",
+        "new_approach": "The Copy-on-Write mode, enabled by default in pandas 3.0, ensures that modifications are isolated to the object being changed, preventing unintended side effects."
+    },
+    {
+        "name": "Chained assignment deprecation",
+        "question": "How should I update my code to avoid issues when modifying DataFrames or Series through multiple assignment steps?",
+        "old_approach": "Chained assignment, updating a DataFrame or Series with multiple setitem steps, may not work as expected.",
+        "new_approach": "With Copy-on-Write enabled, chained assignment will consistently not work, and the SettingWithCopyWarning will be removed."
+    },
+    {
+        "name": "Series.str.decode dtype",
+        "question": "How can I control the data type of the result when decoding bytes in a Series?",
+        "old_approach": "The result of Series.str.decode() used the default dtype.",
+        "new_approach": "Series.str.decode() now has a 'dtype' argument to control the result's data type, and it uses StringDtype when future.infer_string is True."
+    },
+    {
+        "name": "to_hdf() with StringDtype",
+        "question": "How can I ensure that my string data in HDF5 files is correctly preserved when saving and loading with StringDtype?",
+        "old_approach": "Saving and loading string data with to_hdf() might not have consistently supported StringDtype.",
+        "new_approach": "to_hdf() and from_hdf() now round-trip correctly with StringDtype."
+    },
+    {
+        "name": "StringDtype reductions",
+        "question": "How can I perform cumulative sum, min, and max operations on columns with StringDtype?",
+        "old_approach": "Cumulative sum, min, and max operations were not implemented for StringDtype columns.",
+        "new_approach": "The cumsum(), cummin(), and cummax() reductions are now implemented for StringDtype columns."
+    },
+    {
+        "name": "StringDtype sum()",
+        "question": "How can I calculate the sum of a column containing strings?",
+        "old_approach": "The sum() reduction was not implemented for StringDtype columns.",
+        "new_approach": "The sum() reduction is now implemented for StringDtype columns."
+    },
+    {
+        "name": "Series.rank() with StringDtype",
+        "question": "How can I correctly rank string data when using StringDtype with pyarrow storage?",
+        "old_approach": "Series.rank() for StringDtype with pyarrow storage had issues with 'average' method and potential errors.",
+        "new_approach": "Bug fixes in Series.rank() for StringDtype with pyarrow storage improve correctness and error handling."
+    },
+    {
+        "name": "Series.replace() with StringDtype",
+        "question": "How can I ensure type consistency when replacing values in a StringDtype Series?",
+        "old_approach": "Replacing values in a StringDtype Series with a non-string value did not upcast to object dtype.",
+        "new_approach": "Series.replace() with StringDtype now correctly upcasts to object dtype when replacing with a non-string value."
+    },
+    {
+        "name": "Series.str.center() with StringDtype",
+        "question": "How can I ensure string centering in Series.str.center() with pyarrow storage matches Python's behavior?",
+        "old_approach": "Series.str.center() with StringDtype and pyarrow storage did not match Python's behavior in corner cases.",
+        "new_approach": "A bug fix in Series.str.center() for StringDtype with pyarrow storage ensures matching Python behavior in corner cases."
+    },
+    {
+        "name": "Series.str.replace() with negative n",
+        "question": "How can I ensure consistent behavior when using a negative 'n' argument in Series.str.replace() with pyarrow StringDtype?",
+        "old_approach": "Series.str.replace() with n < 0 for StringDtype with pyarrow storage had a bug.",
+        "new_approach": "A bug fix addresses Series.str.replace() with negative 'n' for StringDtype with pyarrow storage."
+    },
+    {
+        "name": "Series.str.slice() with negative step",
+        "question": "How can I ensure correct slicing with negative steps for ArrowDtype and StringDtype with pyarrow storage?",
+        "old_approach": "Series.str.slice() with a negative step produced incorrect results for ArrowDtype and StringDtype with pyarrow storage.",
+        "new_approach": "A bug fix ensures correct results for Series.str.slice() with negative steps for ArrowDtype and StringDtype with pyarrow storage."
+    },
+    {
+        "name": "Index.get_indexer() with infer_string",
+        "question": "How can I ensure Index.get_indexer() works correctly when infer_string is enabled?",
+        "old_approach": "Index.get_indexer() had issues round-tripping through string dtype when infer_string was enabled.",
+        "new_approach": "A bug fix resolves Index.get_indexer() round-tripping through string dtype when infer_string is enabled."
+    },
+    {
+        "name": "DataFrame.to_excel() decimal formatting",
+        "question": "How can I ensure that decimal numbers are saved correctly as numbers, not strings, when using DataFrame.to_excel()?",
+        "old_approach": "DataFrame.to_excel() sometimes stored decimal numbers as strings.",
+        "new_approach": "A bug fix ensures that DataFrame.to_excel() saves decimals as numbers."
+    },
+    {
+        "name": "Copy-on-Write (CoW) default",
+        "question": "How can I prepare my code for future pandas versions where changes in how pandas handles copies and views will be default?",
+        "old_approach": "The current behavior of pandas regarding copies and views.",
+        "new_approach": "Enabling the Copy-on-Write mode by setting `pd.options.mode.copy_on_write = True` to observe potential behavior changes and deprecation warnings before pandas 3.0."
+    },
+    {
+        "name": "String dtype inference",
+        "question": "How can I ensure my string columns are handled efficiently in future pandas versions, avoiding the current object dtype limitations?",
+        "old_approach": "String columns are typically represented using NumPy's object data type, which can lead to performance and memory issues.",
+        "new_approach": "Enabling future string dtype inference with `pd.options.future.infer_string = True` to adopt Arrow-backed string columns by default, improving performance and memory usage."
+    },
+    {
+        "name": "ADBC driver support",
+        "question": "How can I read from or write to databases using ADBC drivers for improved performance and type support?",
+        "old_approach": "Using traditional drivers via SQLAlchemy for database interactions with pandas.",
+        "new_approach": "Utilizing ADBC drivers with `pd.read_sql()` and `pd.DataFrame.to_sql()` for potentially better performance and type handling, and considering `dtype_backend='pyarrow'` for better type preservation."
+    },
+    {
+        "name": "Series.case_when for conditional logic",
+        "question": "How can I create a new Series based on a series of conditional statements, similar to a SQL CASE WHEN statement?",
+        "old_approach": "Manually creating conditions and applying them using multiple boolean indexing operations or functions like `np.where`.",
+        "new_approach": "Using the `Series.case_when()` method, which takes a list of condition-replacement pairs, to efficiently create a Series based on multiple conditions."
+    },
+    {
+        "name": "to_numpy() for extension types",
+        "question": "How can I convert NumPy nullable and Arrow-backed Series to NumPy arrays while preserving their original dtypes?",
+        "old_approach": "Converting NumPy nullable and Arrow-backed Series to NumPy arrays often results in an object dtype.",
+        "new_approach": "Using `Series.to_numpy()` which now intelligently converts these extension types to suitable NumPy dtypes (like float for nullable integers) instead of defaulting to object dtype."
+    },
+    {
+        "name": "Series.struct accessor",
+        "question": "How can I access and manipulate data within PyArrow struct types in a pandas Series?",
+        "old_approach": "Directly accessing struct fields might require manual handling or lower-level PyArrow operations.",
+        "new_approach": "Using the new `Series.struct` accessor, which provides methods like `.explode()` to convert struct data into a DataFrame and `.field()` to access individual struct fields."
+    },
+    {
+        "name": "Series.list accessor",
+        "question": "How can I access individual elements within PyArrow list types in a pandas Series?",
+        "old_approach": "Accessing elements within a Series containing PyArrow lists might involve complex indexing.",
+        "new_approach": "Utilizing the new `Series.list` accessor, which allows direct indexing (e.g., `Series.list[0]`) to retrieve elements from PyArrow lists within a Series."
+    },
+    {
+        "name": "Calamine engine for read_excel",
+        "question": "How can I read Excel files, especially `.xlsb` format, more efficiently and with better datetime recognition?",
+        "old_approach": "Using engines like `openpyxl`, `xlrd`, or `pyxlsb` for reading Excel files, with varying performance and feature support.",
+        "new_approach": "Using the new `calamine` engine for `pd.read_excel()`, which offers improved speed and better support for datetime recognition in `.xlsb` files."
+    },
+    {
+        "name": "merge/join sort behavior",
+        "question": "How can I ensure my merge and join operations consistently produce results sorted according to the documented behavior, especially with non-unique keys?",
+        "old_approach": "Previous versions of pandas sometimes did not strictly adhere to the documented sort order for merge and join operations, particularly with `sort=False`.",
+        "new_approach": "Pandas now consistently follows the documented sort behavior for `merge()` and `join()`, ensuring that join keys are ordered as expected based on the `how` and `sort` parameters."
+    },
+    {
+        "name": "MultiIndex join level reordering",
+        "question": "How can I prevent pandas from reordering my MultiIndex levels when joining DataFrames with different index structures?",
+        "old_approach": "Previous versions of pandas could reorder MultiIndex levels during joins when the index structures differed.",
+        "new_approach": "Pandas no longer reorders index levels during joins when the levels differ, preserving the original structure of the MultiIndex."
+    },
+    {
+        "name": "Deprecated chained assignment",
+        "question": "How can I update values in a DataFrame or Series without triggering warnings about future changes in assignment behavior?",
+        "old_approach": "Using chained assignment, such as `df[condition][column] = value`, which currently works in some cases but will be disallowed in pandas 3.0.",
+        "new_approach": "Avoid chained assignment by performing updates in a single step, for example, using `df.loc[condition, column] = value`."
+    },
+    {
+        "name": "Deprecated frequency alias shortening",
+        "question": "How can I use the correct, non-deprecated aliases for time-based frequency offsets like MonthEnd or QuarterEnd?",
+        "old_approach": "Using shortened aliases such as 'M' for MonthEnd, 'Q' for QuarterEnd, and 'Y' for YearEnd.",
+        "new_approach": "Use the more explicit and non-deprecated aliases: 'ME' for MonthEnd, 'QE' for QuarterEnd, and 'YE' for YearEnd."
+    },
+    {
+        "name": "Deprecated automatic downcasting",
+        "question": "How can I explicitly control the dtype conversion of my data, rather than relying on automatic downcasting in operations like fillna or replace?",
+        "old_approach": "Certain operations like `fillna`, `replace`, `mask`, and `where` would sometimes automatically downcast dtypes (e.g., from object to numeric) based on the values.",
+        "new_approach": "Explicitly use `DataFrame.infer_objects()` to perform this downcasting, or cast values using `.astype()` to ensure predictable dtype behavior."
+    },
+    {
+        "name": "Deprecated offset delta attribute",
+        "question": "How should I access the time delta associated with date offset objects?",
+        "old_approach": "Accessing the `.delta` attribute of offset objects like `Hour.delta` or `Minute.delta`.",
+        "new_approach": "Use `pd.Timedelta(offset_object)` to obtain the time delta, which is the recommended way to access this information."
+    },
+    {
+        "name": "Deprecated Index.format",
+        "question": "How can I format the string representation of an Index?",
+        "old_approach": "Using the `Index.format()` method to control how an Index is displayed as strings.",
+        "new_approach": "Use `index.astype(str)` for a basic string conversion or `index.map(formatter)` for more custom formatting."
+    },
+    {
+        "name": "Deprecated Series.ravel",
+        "question": "Why is `Series.ravel()` no longer recommended, and how should I get the underlying array?",
+        "old_approach": "Using `Series.ravel()` to get the underlying NumPy array.",
+        "new_approach": "Since the underlying array of a Series is already 1-dimensional, `Series.ravel()` is unnecessary. Directly access the array if needed, or simply operate on the Series as the data is already flattened."
+    },
+    {
+        "name": "Deprecated resample with PeriodIndex",
+        "question": "How should I resample time series data when using a PeriodIndex?",
+        "old_approach": "Directly using `resample()` with a `PeriodIndex` and the `convention` keyword.",
+        "new_approach": "Convert your `PeriodIndex` to a `DatetimeIndex` using `.to_timestamp()` before applying `resample()`."
+    },
+    {
+        "name": "Deprecated Series.view",
+        "question": "How should I change the dtype of a Series if `Series.view()` is no longer recommended?",
+        "old_approach": "Using `Series.view()` to change the dtype of a Series.",
+        "new_approach": "Use `Series.astype()` to explicitly change the dtype of a Series, which is the standard and recommended method for type conversion."
+    },
+    {
+        "name": "Deprecated pandas.api.types.is_interval/is_period",
+        "question": "What is the recommended way to check if an object is a pandas Interval or Period?",
+        "old_approach": "Using `pandas.api.types.is_interval()` and `pandas.api.types.is_period()` functions.",
+        "new_approach": "Use the `isinstance()` function with `pd.Interval` and `pd.Period` directly: `isinstance(obj, pd.Interval)` and `isinstance(obj, pd.Period)`."
+    },
+    {
+        "name": "Deprecated read_gbq and to_gbq",
+        "question": "How should I interact with Google BigQuery for reading and writing data with pandas?",
+        "old_approach": "Using the deprecated `pd.read_gbq()` and `pd.DataFrame.to_gbq()` functions.",
+        "new_approach": "Use the `pandas_gbq` library directly: `pandas_gbq.read_gbq()` for reading and `pandas_gbq.to_gbq()` for writing data."
+    },
+    {
+        "name": "Deprecated GroupBy fillna",
+        "question": "How should I fill missing values within groups in a DataFrame or Series?",
+        "old_approach": "Using `DataFrameGroupBy.fillna()` or `SeriesGroupBy.fillna()`.",
+        "new_approach": "Use `DataFrameGroupBy.ffill()` or `bfill()`, or `SeriesGroupBy.ffill()` or `bfill()` for forward and backward filling respectively. For filling with a single value, use `DataFrame.fillna()` or `Series.fillna()` on the group."
+    },
+    {
+        "name": "Deprecated DateOffset.is_anchored",
+        "question": "How can I check if a DateOffset object is anchored?",
+        "old_approach": "Using the `DateOffset.is_anchored()` method.",
+        "new_approach": "For non-Tick subclasses of `DateOffset`, check if `offset.n == 1`. For `Tick` subclasses, this method always returned `False`."
+    },
+    {
+        "name": "Deprecated Series/TimedeltaArray init",
+        "question": "What is the recommended way to create a pandas Series or TimedeltaArray?",
+        "old_approach": "Directly using the `Series()` or `TimedeltaArray()` constructors.",
+        "new_approach": "Use the `pd.array()` function to create these objects, which provides a more consistent interface for array creation."
+    },
+    {
+        "name": "Deprecated `Index.difference` empty/non-comparable handling",
+        "question": "How does `Index.difference()` handle cases where the `other` parameter is empty or non-comparable?",
+        "old_approach": "The `Index.difference()` method sometimes did not return a unique set of values or raised errors in specific edge cases.",
+        "new_approach": "`Index.difference()` now correctly returns a unique set of values, even when `other` is empty or contains non-comparable elements."
+    },
+    {
+        "name": "Deprecated `Series.str.cat` object dtype casting",
+        "question": "Why is the result of `Series.str.cat()` being cast to object dtype, and how can I avoid this?",
+        "old_approach": "The `Series.str.cat()` method always cast its output to an object dtype.",
+        "new_approach": "The `Series.str.cat()` method now correctly preserves the string dtype, aligning with the behavior of other string operations."
+    },
+    {
+        "name": "Deprecated `Series.str.find` negative start value",
+        "question": "How does `Series.str.find()` handle negative start values with PyArrow string data?",
+        "old_approach": "Using `Series.str.find()` with a negative `start` value on PyArrow string data could lead to incorrect behavior.",
+        "new_approach": "The `Series.str.find()` method now correctly handles negative `start` values for PyArrow string data, consistent with its behavior on other string types."
+    },
+    {
+        "name": "Deprecated `Series.str.fullmatch` partial matches",
+        "question": "Why does `Series.str.fullmatch()` sometimes allow partial matches for PyArrow string data ending in `//$`?",
+        "old_approach": "In certain cases, `Series.str.fullmatch()` with PyArrow string data might allow partial matches when the regex ends with `//$`.",
+        "new_approach": "The `Series.str.fullmatch()` method has been fixed to strictly enforce full matches for PyArrow string data, regardless of regex patterns."
+    },
+    {
+        "name": "Deprecated `Series.str.replace` negative n value",
+        "question": "How does `Series.str.replace()` handle negative values for the `n` parameter with PyArrow string data?",
+        "old_approach": "Using `Series.str.replace()` with a negative `n` value on PyArrow string data could lead to incorrect behavior.",
+        "new_approach": "The `Series.str.replace()` method now correctly handles negative `n` values for PyArrow string data, ensuring consistent behavior across string operations."
+    },
+    {
+        "name": "Deprecated `Series.str.startswith/endswith` tuple arguments",
+        "question": "How does `Series.str.startswith()` and `Series.str.endswith()` handle tuple arguments with PyArrow string data?",
+        "old_approach": "Using `Series.str.startswith()` or `Series.str.endswith()` with tuple arguments on PyArrow string data might have caused errors.",
+        "new_approach": "These methods now correctly support tuple arguments for `Series.str.startswith()` and `Series.str.endswith()` when working with PyArrow string data."
+    },
+    {
+        "name": "Deprecated comparison operations for string[pyarrow_numpy]",
+        "question": "Why do comparison operations sometimes fail for string data with dtype 'string[pyarrow_numpy]'?",
+        "old_approach": "Comparison operations on 'string[pyarrow_numpy]' dtype could raise errors if the dtypes involved were not directly comparable.",
+        "new_approach": "Comparison operations are now more robust and handle potential dtype incompatibilities gracefully, preventing unexpected errors."
+    },
+    {
+        "name": "Deprecated `Interval.__repr__` UTC offset display",
+        "question": "How are UTC offsets displayed for Interval bounds, and how are hours, minutes, and seconds shown?",
+        "old_approach": "The string representation of Interval bounds did not always display UTC offsets for Timestamp values, and hour, minute, and second components were omitted.",
+        "new_approach": "The `Interval.__repr__()` now correctly displays UTC offsets for Timestamp bounds and includes the hour, minute, and second components for improved clarity."
+    },
+    {
+        "name": "Deprecated `IntervalIndex.factorize` unit preservation",
+        "question": "How does `factorize()` preserve units for datetime or timedelta intervals?",
+        "old_approach": "When factorizing datetime or timedelta intervals, `IntervalIndex.factorize()` and `Series.factorize()` did not always preserve non-nanosecond units.",
+        "new_approach": "These methods now correctly preserve non-nanosecond units when factorizing datetime or timedelta intervals."
+    },
+    {
+        "name": "Deprecated `IntervalIndex.from_arrays` subtype handling",
+        "question": "What happens when creating an IntervalIndex with `from_arrays` if the subtype is a nullable extension dtype?",
+        "old_approach": "Creating an IntervalIndex using `from_arrays` with nullable extension dtypes could lead to errors.",
+        "new_approach": "The `IntervalIndex.from_arrays()` function now correctly handles nullable extension dtypes as subtypes, preventing errors during creation."
+    },
+    {
+        "name": "Deprecated `IntervalIndex.get_indexer` matching behavior",
+        "question": "How does `IntervalIndex.get_indexer()` match intervals, especially with datetime/timedelta or timezone-aware data?",
+        "old_approach": "There were issues with `IntervalIndex.get_indexer()` incorrectly matching datetime/timedelta intervals against integer targets or timezone-aware intervals against naive targets.",
+        "new_approach": "The `get_indexer()` method now correctly matches intervals based on their type, ensuring accurate indexing for datetime, timedelta, and timezone-aware data."
+    },
+    {
+        "name": "Deprecated setting values with slice in Series with IntervalIndex",
+        "question": "What happens when setting values using a slice in a Series with an IntervalIndex?",
+        "old_approach": "Using a slice to set values in a Series with an IntervalIndex could incorrectly raise an error.",
+        "new_approach": "Setting values using slices in a Series with an IntervalIndex is now handled correctly, without unexpected errors."
+    },
+    {
+        "name": "Deprecated `DataFrame.loc` mutation of boolean indexer",
+        "question": "Why does `DataFrame.loc` sometimes mutate a boolean indexer when working with a MultiIndex?",
+        "old_approach": "When using `DataFrame.loc` with a `MultiIndex`, a boolean indexer might be mutated unexpectedly.",
+        "new_approach": "`DataFrame.loc` no longer mutates boolean indexers when operating with a `MultiIndex`, ensuring predictable behavior."
+    },
+    {
+        "name": "Deprecated `DataFrame.loc` extension dtype assignment",
+        "question": "What happens when assigning a Series with an extension dtype to a NumPy dtype column using `DataFrame.loc`?",
+        "old_approach": "Assigning a Series with an extension dtype to a NumPy dtype column via `DataFrame.loc` could cause issues.",
+        "new_approach": "This assignment is now handled correctly, ensuring data integrity and preventing unexpected type-related errors."
+    },
+    {
+        "name": "Deprecated `Index.difference` return value uniqueness",
+        "question": "Does `Index.difference()` always return unique values, even when dealing with empty or non-comparable inputs?",
+        "old_approach": "Previously, `Index.difference()` might not have returned a unique set of values when the `other` parameter was empty or non-comparable.",
+        "new_approach": "`Index.difference()` now guarantees the return of a unique set of values, improving the reliability of set operations on Indexes."
+    },
+    {
+        "name": "Deprecated Categorical assignment to DataFrame with numpy dtypes",
+        "question": "Why does assigning Categorical data to a DataFrame with NumPy dtypes raise a RecursionError?",
+        "old_approach": "Assigning `Categorical` values to a DataFrame with NumPy dtypes could incorrectly raise a `RecursionError`.",
+        "new_approach": "This assignment is now handled correctly, resolving the `RecursionError` and ensuring smooth data manipulation."
+    },
+    {
+        "name": "Deprecated creating new column with missing values",
+        "question": "What happens when creating a new column with missing values by setting a single string value?",
+        "old_approach": "Setting a single string value to create a new column with missing values could lead to unexpected behavior.",
+        "new_approach": "This operation is now handled correctly, ensuring that new columns with missing values are created as expected."
+    },
+    {
+        "name": "Deprecated `DataFrame.update` in-place for tz-aware datetimes",
+        "question": "Does `DataFrame.update()` modify tz-aware datetime columns in place?",
+        "old_approach": "Previously, `DataFrame.update()` did not perform updates in place for tz-aware `datetime64` dtypes.",
+        "new_approach": "`DataFrame.update()` now correctly performs updates in place for tz-aware `datetime64` dtypes."
+    },
+    {
+        "name": "Deprecated `MultiIndex.get_indexer` error handling",
+        "question": "What error is raised by `MultiIndex.get_indexer()` when the index is non-monotonic and a method is provided?",
+        "old_approach": "The `MultiIndex.get_indexer()` method did not raise a `ValueError` when a `method` was provided and the index was non-monotonic.",
+        "new_approach": "A `ValueError` is now correctly raised in this scenario, providing clearer feedback on invalid operations."
+    },
+    {
+        "name": "Deprecated `read_csv` skip_rows with chunksize and python engine",
+        "question": "Does `read_csv` respect `chunksize` when `skiprows` is specified with the python engine?",
+        "old_approach": "When using `read_csv` with the `python` engine, `chunksize`, and `skiprows`, the `chunksize` was ignored.",
+        "new_approach": "`read_csv` now correctly respects the `chunksize` parameter even when `skiprows` is specified with the `python` engine."
+    },
+    {
+        "name": "Deprecated `read_csv` `on_bad_lines='warn'` behavior",
+        "question": "How does `read_csv` handle bad lines when `on_bad_lines='warn'` is used?",
+        "old_approach": "Previously, `on_bad_lines='warn'` in `read_csv` wrote to `stderr` instead of raising a Python warning.",
+        "new_approach": "This option now correctly raises a `pandas.errors.ParserWarning`, providing a standard Python warning mechanism."
+    },
+    {
+        "name": "Deprecated `read_csv` `quotechar` with pyarrow engine",
+        "question": "Does `read_csv` with the `pyarrow` engine respect the `quotechar` parameter?",
+        "old_approach": "The `quotechar` parameter was ignored when using `read_csv` with the `pyarrow` engine.",
+        "new_approach": "`read_csv` with the `pyarrow` engine now correctly respects the `quotechar` parameter."
+    },
+    {
+        "name": "Deprecated `read_csv` `usecols` with no headers and pyarrow engine",
+        "question": "Does `read_csv` with the `pyarrow` engine work with `usecols` when the CSV has no headers?",
+        "old_approach": "The `usecols` parameter did not function correctly with `read_csv` (using the `pyarrow` engine) when the CSV file lacked headers.",
+        "new_approach": "`usecols` now functions correctly in this scenario, allowing column selection even without headers when using the `pyarrow` engine."
+    },
+    {
+        "name": "Deprecated `read_excel` xlrd engine error with NaN/Inf",
+        "question": "Why does `read_excel` with the `xlrd` engine error when reading files with NaN or Inf values?",
+        "old_approach": "Using `read_excel` with the `xlrd` engine on `.xls` files containing `NaN` or `Inf` values caused errors.",
+        "new_approach": "This issue has been resolved, and `read_excel` with the `xlrd` engine now correctly handles `NaN` and `Inf` values."
+    },
+    {
+        "name": "Deprecated `read_json` dtype conversion with infer_string",
+        "question": "Does `read_json` handle dtype conversion correctly when `infer_string` is enabled?",
+        "old_approach": "When `infer_string` was enabled in `read_json`, dtype conversion was not handled properly.",
+        "new_approach": "`read_json` now correctly performs dtype conversions even when `infer_string` is enabled."
+    },
+    {
+        "name": "Deprecated `DataFrame.to_excel` OdsWriter boolean/string value handling",
+        "question": "How does `DataFrame.to_excel` handle boolean and string values with the OdsWriter for `.ods` files?",
+        "old_approach": "The `OdsWriter` in `DataFrame.to_excel` did not correctly write boolean or string values.",
+        "new_approach": "Boolean and string values are now written correctly using the `OdsWriter`."
+    },
+    {
+        "name": "Deprecated `DataFrame.to_hdf` and `read_hdf` datetime rounding trip",
+        "question": "Do `DataFrame.to_hdf` and `read_hdf` correctly handle datetime values with non-nanosecond resolutions?",
+        "old_approach": "There was an issue where `DataFrame.to_hdf` and `read_hdf` did not correctly round-trip `datetime64` dtypes with non-nanosecond resolutions.",
+        "new_approach": "These functions now correctly handle the round-tripping of `datetime64` dtypes across various resolutions."
+    },
+    {
+        "name": "Deprecated `DataFrame.to_stata` extension dtype errors",
+        "question": "Why does `DataFrame.to_stata` raise errors when using extension dtypes?",
+        "old_approach": "`DataFrame.to_stata` raised errors when encountering extension dtypes.",
+        "new_approach": "This function now correctly handles extension dtypes, preventing errors during Stata file export."
+    },
+    {
+        "name": "Deprecated `read_excel` odf engine annotation handling",
+        "question": "Does `read_excel` with the `odf` engine handle string cells with annotations?",
+        "old_approach": "The `odf` engine in `read_excel` errored when a string cell contained an annotation.",
+        "new_approach": "This issue has been fixed, and `read_excel` with the `odf` engine now correctly processes string cells with annotations."
+    },
+    {
+        "name": "Deprecated `read_excel` odf engine float value caching",
+        "question": "Does `read_excel` with the `odf` engine correctly handle float values without cached formatted cells?",
+        "old_approach": "When reading `.ods` files, `read_excel` with the `odf` engine could error if float values lacked cached formatted cells.",
+        "new_approach": "This has been resolved, and the `odf` engine now correctly handles float values even without cached formatted cells."
+    },
+    {
+        "name": "Deprecated `DataFrame.to_json` OverflowError for unsupported types",
+        "question": "Why does `DataFrame.to_json` raise an OverflowError for unsupported NumPy types?",
+        "old_approach": "`DataFrame.to_json` raised an `OverflowError` instead of a `TypeError` for unsupported NumPy types.",
+        "new_approach": "This function now raises the more appropriate `TypeError` for unsupported NumPy types, providing clearer error feedback."
+    },
+    {
+        "name": "Deprecated `PeriodIndex` construction with multiple arguments",
+        "question": "What happens if I provide multiple arguments like `data`, `ordinal`, and `**fields` when constructing a `PeriodIndex`?",
+        "old_approach": "Constructing a `PeriodIndex` with multiple of these arguments (`data`, `ordinal`, `**fields`) did not raise a `ValueError` as expected.",
+        "new_approach": "Providing multiple conflicting arguments now correctly raises a `ValueError`, ensuring proper usage of the `PeriodIndex` constructor."
+    },
+    {
+        "name": "Deprecated `Period` addition overflow behavior",
+        "question": "Does adding offsets to a `Period` object wrap around or raise an error on overflow?",
+        "old_approach": "Adding offsets to a `Period` object could silently wrap around on overflow instead of raising an error.",
+        "new_approach": "Adding offsets to a `Period` object now correctly raises an `OverflowError` when an overflow condition occurs."
+    },
+    {
+        "name": "Deprecated `PeriodDtype` to `datetime64` casting resolution",
+        "question": "Does casting from `PeriodDtype` to `datetime64` preserve the original resolution?",
+        "old_approach": "Casting from `PeriodDtype` to `datetime64` or `DatetimeTZDtype` with non-nanosecond units incorrectly resulted in nanosecond units.",
+        "new_approach": "Casting now correctly preserves the non-nanosecond units of the original `PeriodDtype`."
+    },
+    {
+        "name": "Deprecated `DataFrame.plot.box` vert=False with shared axes",
+        "question": "Why does `DataFrame.plot.box` with `vert=False` error when used with shared axes?",
+        "old_approach": "Plotting a box plot with `vert=False` could cause issues when the Matplotlib Axes object was created with `sharey=True`.",
+        "new_approach": "This plotting behavior is now handled correctly, resolving the error when using `vert=False` with shared y-axes."
+    },
+    {
+        "name": "Deprecated `DataFrame.plot.scatter` discarding string columns",
+        "question": "Does `DataFrame.plot.scatter` discard string columns when creating scatter plots?",
+        "old_approach": "The `DataFrame.plot.scatter` function sometimes discarded string columns during plot generation.",
+        "new_approach": "String columns are now correctly handled and not discarded by `DataFrame.plot.scatter`."
+    },
+    {
+        "name": "Deprecated `Series.plot` reusing axes",
+        "question": "What happens when reusing an `ax` object with `Series.plot` and passing a `how` keyword?",
+        "old_approach": "Reusing an `ax` object with `Series.plot` and passing a `how` keyword did not raise an error as expected.",
+        "new_approach": "An appropriate error is now raised in this scenario, ensuring correct usage of the plotting functions."
+    },
+    {
+        "name": "Deprecated `DataFrameGroupBy.transform` unobserved categories",
+        "question": "Does `DataFrameGroupBy.transform` handle unobserved categories correctly with `observed=False` and `f='idxmin'` or `f='idxmax'`?",
+        "old_approach": "These operations could incorrectly raise an error on unobserved categories when `observed=False`.",
+        "new_approach": "The behavior is now correct, preventing errors related to unobserved categories in these GroupBy transformations."
+    },
+    {
+        "name": "Deprecated `DataFrameGroupBy.value_counts` sorting",
+        "question": "How does `DataFrameGroupBy.value_counts()` sort its results, especially when grouping keys are integers or `sort=False`?",
+        "old_approach": "Sorting behavior in `DataFrameGroupBy.value_counts()` was inconsistent, potentially sorting by proportions instead of frequencies, or not respecting `sort=False` when group keys were integers.",
+        "new_approach": "Sorting is now consistent, respecting `sort=False` and correctly sorting by frequencies when `normalize=True`."
+    },
+    {
+        "name": "Deprecated `DataFrame.asfreq` resolution conversion",
+        "question": "Does `DataFrame.asfreq` preserve the resolution of datetime indexes with non-nanosecond units?",
+        "old_approach": "When using `DataFrame.asfreq` or `Series.asfreq` with datetime indexes having non-nanosecond resolutions, the results were incorrectly converted to nanosecond resolution.",
+        "new_approach": "The original non-nanosecond resolution is now correctly preserved during the `asfreq` operation."
+    },
+    {
+        "name": "Deprecated `DataFrame.ewm` with non-nanosecond times",
+        "question": "How does `DataFrame.ewm` handle `times` with non-nanosecond datetime resolutions?",
+        "old_approach": "`DataFrame.ewm` encountered issues when `times` contained `datetime64` or `DatetimeTZDtype` with non-nanosecond resolutions.",
+        "new_approach": "This functionality now works correctly, handling various datetime resolutions in `times` for Exponentially Weighted Moving calculations."
+    },
+    {
+        "name": "Deprecated `DataFrame.groupby` Decimal and NA grouping",
+        "question": "What happens when grouping by `Decimal` and NA values with `sort=True`?",
+        "old_approach": "Grouping by a combination of `Decimal` and NA values with `sort=True` in `DataFrame.groupby()` would fail.",
+        "new_approach": "This grouping operation is now successful, correctly handling mixed `Decimal` and NA values with sorting enabled."
+    },
+    {
+        "name": "Deprecated `DataFrame.groupby` DataFrame subclasses",
+        "question": "Does `DataFrame.groupby` work correctly for DataFrame subclasses when selecting specific columns?",
+        "old_approach": "Applying functions to a subset of columns in `DataFrame.groupby` failed for DataFrame subclasses.",
+        "new_approach": "This functionality now works correctly for DataFrame subclasses, ensuring consistent behavior across DataFrame types."
+    },
+    {
+        "name": "Deprecated `DataFrame.resample` BusinessDay bin edges",
+        "question": "Are the bin edges calculated correctly for `DataFrame.resample` with `BusinessDay` offsets?",
+        "old_approach": "Bin edges were calculated incorrectly for `BusinessDay` offsets in `DataFrame.resample`.",
+        "new_approach": "Bin edges are now calculated correctly for `BusinessDay` offsets."
+    },
+    {
+        "name": "Deprecated `DataFrame.resample` MonthBegin bin edges",
+        "question": "Are the bin edges correct when resampling with `MonthBegin` offsets?",
+        "old_approach": "The bin edges for `MonthBegin` offsets were calculated incorrectly in `DataFrame.resample`.",
+        "new_approach": "Bin edges are now correctly calculated for `MonthBegin` offsets."
+    },
+    {
+        "name": "Deprecated `DataFrame.rolling` duplicate datetime indexes",
+        "question": "How does `DataFrame.rolling` handle duplicate datetime indexes with `closed='left'` or `closed='neither'`?",
+        "old_approach": "`DataFrame.rolling` treated duplicate datetime indexes as consecutive rather than equal when `closed='left'` or `closed='neither'`, leading to incorrect window calculations.",
+        "new_approach": "Duplicate datetime indexes are now correctly handled, ensuring accurate rolling window calculations."
+    },
+    {
+        "name": "Deprecated `DataFrame.rolling` with Arrow Dtype columns",
+        "question": "Does `DataFrame.rolling` work with Arrow Dtype columns for the index or `on` parameter?",
+        "old_approach": "`DataFrame.rolling` failed when the index or the column specified by `on` was an Arrow Dtype with `pyarrow.timestamp`.",
+        "new_approach": "This functionality now works correctly, supporting Arrow Dtype timestamp columns for rolling calculations."
+    },
+    {
+        "name": "Deprecated `concat` sorting with DatetimeIndex",
+        "question": "Does `concat` sort DatetimeIndex objects correctly?",
+        "old_approach": "The `sort` parameter was ignored by `concat` when working with `DatetimeIndex` objects.",
+        "new_approach": "`concat` now correctly respects the `sort` parameter when concatenating `DatetimeIndex` objects."
+    },
+    {
+        "name": "Deprecated `concat` Series renaming",
+        "question": "What happens to Series names when concatenating with `ignore_index=False`?",
+        "old_approach": "When concatenating Series with `ignore_index=False`, Series names were being renamed.",
+        "new_approach": "Series names are now preserved correctly when concatenating with `ignore_index=False`."
+    },
+    {
+        "name": "Deprecated `merge_asof` timedelta tolerance with Arrow dtype",
+        "question": "Does `merge_asof` handle `Timedelta` tolerance correctly with Arrow Dtype columns?",
+        "old_approach": "Using a `Timedelta` tolerance with `merge_asof` on an Arrow Dtype column caused issues.",
+        "new_approach": "This functionality now works correctly, supporting `Timedelta` tolerances with Arrow Dtype columns."
+    },
+    {
+        "name": "Deprecated `merge` datetime/timedelta column merging",
+        "question": "Can I merge datetime columns with timedelta columns in pandas?",
+        "old_approach": "`merge` did not raise an error when attempting to merge datetime columns with timedelta columns.",
+        "new_approach": "`merge` now correctly raises an error when attempting to merge incompatible datetime and timedelta columns."
+    },
+    {
+        "name": "Deprecated `merge` string/numeric column merging",
+        "question": "Can I merge string columns with numeric columns using pandas `merge`?",
+        "old_approach": "`merge` did not raise an error when attempting to merge string columns with numeric columns.",
+        "new_approach": "`merge` now correctly raises an error when attempting to merge incompatible string and numeric columns."
+    },
+    {
+        "name": "Deprecated `merge` new string dtype sorting",
+        "question": "Does `merge` sort correctly with the new string dtype?",
+        "old_approach": "`merge` did not sort correctly when using the new string dtype.",
+        "new_approach": "`merge` now sorts correctly with the new string dtype."
+    },
+    {
+        "name": "Deprecated `merge` column order with empty inputs",
+        "question": "What is the column order when merging DataFrames with empty inputs?",
+        "old_approach": "The column order was incorrect when merging DataFrames where one or both were empty.",
+        "new_approach": "Column order is now correctly handled even when merging with empty DataFrames."
+    },
+    {
+        "name": "Deprecated `DataFrame.melt` var_name type",
+        "question": "Does `DataFrame.melt` require `var_name` to be a string?",
+        "old_approach": "`DataFrame.melt` raised an exception if `var_name` was not a string.",
+        "new_approach": "This operation now handles non-string `var_name` values more gracefully."
+    },
+    {
+        "name": "Deprecated `DataFrame.melt` datetime preservation",
+        "question": "Does `DataFrame.melt` preserve datetime types?",
+        "old_approach": "`DataFrame.melt` did not preserve datetime types during the melting process.",
+        "new_approach": "Datetime types are now correctly preserved when using `DataFrame.melt`."
+    },
+    {
+        "name": "Deprecated `DataFrame.pivot_table` row margin numeric column names",
+        "question": "Is the row margin calculated correctly in `pivot_table` when columns have numeric names?",
+        "old_approach": "The row margin calculation in `pivot_table` was incorrect when columns had numeric names.",
+        "new_approach": "The row margin is now calculated correctly, even when columns have numeric names."
+    },
+    {
+        "name": "Deprecated `DataFrame.pivot` extension dtype data",
+        "question": "Does `DataFrame.pivot` work with extension dtypes for the data?",
+        "old_approach": "`DataFrame.pivot` encountered issues when used with numeric columns and extension dtypes for the data.",
+        "new_approach": "This operation now functions correctly, supporting extension dtypes for data in `pivot` operations."
+    },
+    {
+        "name": "Deprecated `DataFrame.stack` future_stack NA handling",
+        "question": "Does `DataFrame.stack(future_stack=True)` preserve NA values in the index?",
+        "old_approach": "When using `future_stack=True`, `DataFrame.stack()` did not preserve NA values in the index.",
+        "new_approach": "NA values in the index are now correctly preserved when using `DataFrame.stack(future_stack=True)`."
+    },
+    {
+        "name": "Deprecated `arrays.SparseArray.take` fill value handling",
+        "question": "How does `take()` in `SparseArray` handle different fill values?",
+        "old_approach": "The `take()` method in `SparseArray` had issues when using a different fill value than the array's own fill value.",
+        "new_approach": "This method now correctly handles different fill values, ensuring consistent behavior."
+    },
+    {
+        "name": "Deprecated `DataFrame.__dataframe__` large string support",
+        "question": "Does `DataFrame.__dataframe__()` support PyArrow large strings?",
+        "old_approach": "The `DataFrame.__dataframe__()` method did not support PyArrow large strings.",
+        "new_approach": "This method now correctly supports PyArrow large strings."
+    },
+    {
+        "name": "Deprecated `DataFrame.describe` percentile formatting",
+        "question": "How are percentiles formatted in the output of `DataFrame.describe()`?",
+        "old_approach": "The formatting of percentiles in `DataFrame.describe()` incorrectly rounded 99.999% to 100%.",
+        "new_approach": "Percentile formatting is now more precise, correctly representing values like 99.999% without premature rounding."
+    },
+    {
+        "name": "Deprecated `api.interchange.from_dataframe` empty string column handling",
+        "question": "Does `api.interchange.from_dataframe()` handle empty string columns correctly?",
+        "old_approach": "The `api.interchange.from_dataframe()` function raised a `NotImplementedError` when processing empty string columns.",
+        "new_approach": "This function now correctly handles empty string columns, preventing the `NotImplementedError`."
+    },
+    {
+        "name": "Deprecated `cut` and `qcut` datetime resolution",
+        "question": "Does `cut()` and `qcut()` preserve the resolution of datetime values?",
+        "old_approach": "When using `cut()` or `qcut()` with `datetime64` values that had non-nanosecond units, the resulting bins were incorrectly set to nanosecond resolution.",
+        "new_approach": "These functions now correctly preserve the non-nanosecond units of datetime values when creating bins."
+    },
+    {
+        "name": "Deprecated `cut` timezone-aware datetime binning",
+        "question": "Can `cut()` bin timezone-aware datetimes using timezone-naive bins?",
+        "old_approach": "`cut()` incorrectly allowed binning of timezone-aware datetimes with timezone-naive bins.",
+        "new_approach": "This operation is now prevented, ensuring that timezone awareness is maintained consistently."
+    },
+    {
+        "name": "Deprecated `infer_freq` weekly frequency resolution",
+        "question": "How does `infer_freq` handle weekly frequencies with non-nanosecond resolutions?",
+        "old_approach": "`infer_freq` and `DatetimeIndex.inferred_freq` had issues with weekly frequencies and non-nanosecond resolutions.",
+        "new_approach": "These functions now correctly infer frequencies for weekly data, regardless of the datetime resolution."
+    },
+    {
+        "name": "Deprecated `DataFrame.apply` raw=True args handling",
+        "question": "Does `DataFrame.apply` with `raw=True` pass `args` to the applied function?",
+        "old_approach": "When `raw=True` was passed to `DataFrame.apply`, the `args` were ignored.",
+        "new_approach": "`args` are now correctly passed to the applied function even when `raw=True`, ensuring all arguments are considered."
+    },
+    {
+        "name": "Deprecated `DataFrame.from_dict` row sorting",
+        "question": "Does `DataFrame.from_dict` sort the rows of the resulting DataFrame?",
+        "old_approach": "`DataFrame.from_dict` used to always sort the rows of the created DataFrame.",
+        "new_approach": "The rows of the DataFrame created by `DataFrame.from_dict` are no longer sorted by default, preserving the original order from the dictionary."
+    },
+    {
+        "name": "Deprecated `DataFrame.sort_index` with axis=columns and ignore_index=True",
+        "question": "What happens when sorting the index of a DataFrame by columns while also ignoring the index?",
+        "old_approach": "Sorting the index by columns with `ignore_index=True` in `DataFrame.sort_index` raised a `ValueError`.",
+        "new_approach": "This combination of parameters is now handled correctly, preventing the `ValueError`."
+    },
+    {
+        "name": "Deprecated rendering of inf values with use_inf_as_na",
+        "question": "How are infinity values rendered when `use_inf_as_na` is enabled?",
+        "old_approach": "Rendering infinity values in a DataFrame with `use_inf_as_na` enabled caused rendering issues.",
+        "new_approach": "Infinity values are now rendered correctly when `use_inf_as_na` is enabled."
+    },
+    {
+        "name": "Deprecated MultiIndex level name display",
+        "question": "Why is a MultiIndex level name not displayed when it is '0'?",
+        "old_approach": "When a MultiIndex level name was '0', it was not displayed in the rendered Series.",
+        "new_approach": "Level names, including '0', are now correctly displayed in the rendered Series."
+    },
+    {
+        "name": "Deprecated error message for assigning empty DataFrame",
+        "question": "What is the error message when assigning an empty DataFrame to a column?",
+        "old_approach": "The error message when assigning an empty DataFrame to a column was not informative.",
+        "new_approach": "A more informative error message is now provided in this scenario."
+    },
+    {
+        "name": "Deprecated casting time-like strings to pyarrow.time64",
+        "question": "What happens when time-like strings are cast to `ArrowDtype` with `pyarrow.time64`?",
+        "old_approach": "Casting time-like strings to `ArrowDtype` with `pyarrow.time64` resulted in incorrect handling.",
+        "new_approach": "This casting operation is now handled correctly, ensuring accurate interpretation of time-like strings."
+    },
+    {
+        "name": "Deprecated spurious numba deprecation warning",
+        "question": "Why does a spurious deprecation warning appear from numba when using `DataFrame.rolling.apply` with `engine='numba'`?",
+        "old_approach": "Passing a NumPy ufunc in `DataFrame.rolling.apply` with `engine='numba'` triggered a spurious deprecation warning from numba.",
+        "new_approach": "This warning has been resolved, and the function now operates without the unnecessary deprecation notice."
+    }
+]
